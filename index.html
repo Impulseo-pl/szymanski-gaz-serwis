@@ -6,6 +6,40 @@
 <title>Szymański Gaz Serwis — serwis kotłów gazowych, Gniezno</title>
 <meta name="description" content="Przeglądy, naprawy i montaż kotłów gazowych. Gniezno, Witkowo, Trzemeszno, Czerniejewo, Kłecko. Kamil Szymański, 4,8/5 z 45 opinii Google.">
 <meta name="theme-color" content="#08090b">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="canonical" href="https://impulseo-pl.github.io/szymanski-gaz-serwis/">
+<!-- podgląd przy wysyłce linku SMS-em / WhatsAppem / mailem -->
+<meta property="og:type" content="website">
+<meta property="og:locale" content="pl_PL">
+<meta property="og:site_name" content="Szymański Gaz Serwis">
+<meta property="og:title" content="Szymański Gaz Serwis — kotły gazowe, Gniezno">
+<meta property="og:description" content="Przeglądy, naprawy i montaż kotłów gazowych. Kamil Szymański, 4,8 z 45 opinii Google. Gniezno, Witkowo, Trzemeszno, Czerniejewo, Kłecko.">
+<meta property="og:url" content="https://impulseo-pl.github.io/szymanski-gaz-serwis/">
+<meta property="og:image" content="https://impulseo-pl.github.io/szymanski-gaz-serwis/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Szymański Gaz Serwis — kotły gazowe, Gniezno">
+<meta name="twitter:description" content="Przeglądy, naprawy i montaż kotłów gazowych. 4,8 z 45 opinii Google.">
+<meta name="twitter:image" content="https://impulseo-pl.github.io/szymanski-gaz-serwis/og.jpg">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HVACBusiness",
+"name":"Szymański Gaz Serwis","founder":"Kamil Szymański",
+"description":"Przeglądy, naprawy, wymiana i montaż kotłów gazowych. Instalacje C.O. i kotłownie.",
+"telephone":"+48782492609","email":"kamilszymanski123@vp.pl",
+"url":"https://impulseo-pl.github.io/szymanski-gaz-serwis/",
+"image":"https://impulseo-pl.github.io/szymanski-gaz-serwis/og.jpg",
+"address":{"@type":"PostalAddress","streetAddress":"ul. Swarzędzka 25","postalCode":"62-200","addressLocality":"Gniezno","addressCountry":"PL"},
+"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","reviewCount":"45"},
+"areaServed":[{"@type":"City","name":"Gniezno"},{"@type":"City","name":"Witkowo"},{"@type":"City","name":"Trzemeszno"},{"@type":"City","name":"Czerniejewo"},{"@type":"City","name":"Kłecko"}],
+"hasOfferCatalog":{"@type":"OfferCatalog","name":"Usługi","itemListElement":[
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Przegląd i konserwacja kotła gazowego"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Naprawa awarii kotła"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Wymiana i montaż kotła"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Czyszczenie wymiennika i palnika"}},
+{"@type":"Offer","itemOffered":{"@type":"Service","name":"Instalacje C.O. i kotłownie"}}]}}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@200;300;400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -268,6 +302,32 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
 .cta>*{position:relative}
 .cta .bigphone{margin-top:8px}
 
+/* ---------- pasek sezonowy ---------- */
+.season{position:relative;margin:0 clamp(20px,6.5vw,104px);border-radius:24px;overflow:hidden;
+  padding:clamp(30px,4vw,44px) clamp(26px,4vw,48px);
+  display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;
+  background:linear-gradient(120deg,#16110c,#0b0d10 62%);border:1px solid #2a2119}
+.season::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(520px 260px at 8% 10%,rgba(255,139,61,.16),transparent 62%)}
+.season>*{position:relative}
+.season .lft b{display:block;font-family:Sora;font-weight:600;letter-spacing:-.025em;
+  font-size:clamp(21px,2.6vw,32px);margin-bottom:8px}
+.season .lft span{font-size:15px;color:var(--dim);max-width:52ch;display:block}
+.season .cnt{display:flex;gap:12px}
+.season .cell{min-width:82px;text-align:center;padding:14px 12px;border-radius:14px;
+  background:rgba(255,255,255,.03);border:1px solid var(--line2)}
+.season .cell b{display:block;font-family:Sora;font-weight:700;font-size:clamp(24px,3vw,34px);
+  color:var(--flame);font-variant-numeric:tabular-nums;line-height:1}
+.season .cell span{font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim2)}
+
+/* przycisk WhatsApp */
+.wa{display:inline-flex;align-items:center;gap:9px;padding:11px 21px;border-radius:100px;
+  text-decoration:none;font-weight:600;font-size:14.5px;white-space:nowrap;
+  border:1px solid #2f6b45;color:#8fe3ad;background:rgba(37,211,102,.09);
+  transition:background .35s,border-color .35s,transform .35s var(--eout)}
+.wa:hover{background:rgba(37,211,102,.17);border-color:#3e8f5c;transform:translateY(-2px)}
+.wa svg{width:17px;height:17px;fill:currentColor}
+
 /* ---------- sticky CTA na telefonie ---------- */
 .dock{position:fixed;left:12px;right:12px;bottom:12px;z-index:130;display:none;
   gap:10px;align-items:center;justify-content:space-between;
@@ -430,6 +490,7 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
             <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.4 21 3 13.6 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 1.7z"/></svg>
             Zadzwoń: 782 492 609
           </a>
+          <a class="wa" href="https://wa.me/48782492609?text=Dzie%C5%84%20dobry%2C%20mam%20pytanie%20o%20kocio%C5%82%3A%20" target="_blank" rel="noopener" data-cur="Napisz"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .1-1.6-.1-.4-.1-.9-.3-1.5-.6-2.6-1.1-4.3-3.8-4.4-4-.1-.2-1-1.4-1-2.6s.6-1.8.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.5-.3.3c-.1.1-.3.3-.1.6.1.3.6 1.1 1.4 1.8 1 .9 1.8 1.1 2 1.2.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l2 .9c.2.1.4.2.4.3.1.2.1.6-.1 1.1z"/></svg>WhatsApp</a>
           <a class="ghost" href="#uslugi" data-mag>Zobacz, co robię</a>
         </div>
       </div>
@@ -510,6 +571,18 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
       <div class="dsc">Popularne marki gazowe — kondensacyjne i starsze.</div></div>
   </div>
 </section>
+
+<div class="season reveal" id="season">
+  <div class="lft">
+    <b>Przegląd latem kosztuje tyle samo. W styczniu kosztuje nerwy.</b>
+    <span>Do sezonu grzewczego zostało niewiele. Wrześniowe i październikowe terminy schodzą pierwsze — wtedy dzwonią wszyscy naraz.</span>
+  </div>
+  <div class="cnt" id="cnt">
+    <div class="cell"><b id="cd">–</b><span>dni</span></div>
+    <div class="cell"><b id="ch">–</b><span>godzin</span></div>
+    <div class="cell"><b id="cm">–</b><span>minut</span></div>
+  </div>
+</div>
 
 <div class="mq"><div id="mqin">
   <span>Przeglądy kotłów <b>·</b> Naprawy awarii <b>·</b> Montaż i wymiana <b>·</b> Instalacje C.O. <b>·</b> Kotłownie <b>·</b> Czyszczenie wymiennika <b>·</b></span>
@@ -638,6 +711,7 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
   <div class="ctagrid">
     <div>
       <a class="bigphone" href="tel:+48782492609" data-mag data-cur="Zadzwoń">782 492 609</a>
+      <div style="margin-top:20px"><a class="wa" href="https://wa.me/48782492609?text=Dzie%C5%84%20dobry%2C%20mam%20pytanie%20o%20kocio%C5%82%3A%20" target="_blank" rel="noopener" data-cur="Napisz"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .1-1.6-.1-.4-.1-.9-.3-1.5-.6-2.6-1.1-4.3-3.8-4.4-4-.1-.2-1-1.4-1-2.6s.6-1.8.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.5-.3.3c-.1.1-.3.3-.1.6.1.3.6 1.1 1.4 1.8 1 .9 1.8 1.1 2 1.2.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l2 .9c.2.1.4.2.4.3.1.2.1.6-.1 1.1z"/></svg>WhatsApp</a></div>
       <div class="chips" style="margin-top:22px"><i>Gniezno</i><i>Witkowo</i><i>Trzemeszno</i><i>Czerniejewo</i><i>Kłecko</i><i>okolice</i></div>
     </div>
     <div class="meta">
@@ -655,10 +729,13 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
 
 <div class="dock" id="dock">
   <div><b>782 492 609</b><span>Kamil odbiera osobiście</span></div>
-  <a href="tel:+48782492609">
-    <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.4 21 3 13.6 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 1.7z"/></svg>
-    Zadzwoń
-  </a>
+  <div style="display:flex;gap:8px">
+    <a class="wa" style="padding:11px 15px" href="https://wa.me/48782492609?text=Dzie%C5%84%20dobry%2C%20mam%20pytanie%20o%20kocio%C5%82%3A%20" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm5.3 14.1c-.2.6-1.2 1.2-1.7 1.2-.5.1-1 .1-1.6-.1-.4-.1-.9-.3-1.5-.6-2.6-1.1-4.3-3.8-4.4-4-.1-.2-1-1.4-1-2.6s.6-1.8.9-2.1c.2-.2.5-.3.7-.3h.5c.2 0 .4 0 .6.5l.8 2c.1.2.1.3 0 .5l-.3.5-.3.3c-.1.1-.3.3-.1.6.1.3.6 1.1 1.4 1.8 1 .9 1.8 1.1 2 1.2.3.1.4.1.6-.1l.8-1c.2-.2.4-.2.6-.1l2 .9c.2.1.4.2.4.3.1.2.1.6-.1 1.1z"/></svg></a>
+    <a href="tel:+48782492609">
+      <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.4 21 3 13.6 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 1.7z"/></svg>
+      Zadzwoń
+    </a>
+  </div>
 </div>
 
 <script>
@@ -687,8 +764,11 @@ var starts=[],acc=0; SEG.forEach(function(s){starts.push(acc);acc+=s.w});
 var narrow=matchMedia('(max-width:700px)').matches;
 var STEP=narrow?2:1, store={}, stills={};
 function pad(n){return('000'+n).slice(-3)}
-function seqList(k,n){var o=[];for(var i=1;i<=n;i+=STEP)o.push('klatki/'+k+pad(i)+'.jpg');
-  var L='klatki/'+k+pad(n)+'.jpg'; if(o[o.length-1]!==L)o.push(L); return o}
+/* na telefonie: co druga klatka ORAZ lżejszy plik (760 px zamiast 1500 px)
+   — z 7,9 MB robi się ok. 1,5 MB transferu */
+var DIR=narrow?'klatki-m/':'klatki/';
+function seqList(k,n){var o=[];for(var i=1;i<=n;i+=STEP)o.push(DIR+k+pad(i)+'.jpg');
+  var L=DIR+k+pad(n)+'.jpg'; if(o[o.length-1]!==L)o.push(L); return o}
 function loadList(l,cb){return l.map(function(s){var im=new Image();im.onload=im.onerror=function(){cb&&cb()};im.src=s;return im})}
 
 /* ================= WEBGL: kadr + obróbka ================= */
@@ -1191,6 +1271,24 @@ addEventListener('resize',function(){
     var p=R((innerHeight*0.85-r.top)/(innerHeight*0.5),0,1);
     ln.style.strokeDasharray='100';ln.style.strokeDashoffset=(100-p*100).toFixed(1);
   },{passive:true});
+})();
+
+/* ===== ile zostało do sezonu grzewczego ===== */
+(function(){
+  var cd=document.getElementById('cd');if(!cd)return;
+  var ch=document.getElementById('ch'),cm=document.getElementById('cm');
+  function tick(){
+    var now=new Date();
+    // umownie: start sezonu 1 października; po tej dacie liczymy do przyszłego roku
+    var y=now.getFullYear();
+    var t=new Date(y,9,1,0,0,0);
+    if(t-now<0)t=new Date(y+1,9,1,0,0,0);
+    var s=Math.max(0,Math.floor((t-now)/1000));
+    cd.textContent=Math.floor(s/86400);
+    ch.textContent=Math.floor(s%86400/3600);
+    cm.textContent=Math.floor(s%3600/60);
+  }
+  tick();setInterval(tick,30000);
 })();
 
 /* dolny pasek z telefonem — pojawia się, gdy hero zniknie z ekranu */
