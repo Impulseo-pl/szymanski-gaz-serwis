@@ -27,12 +27,21 @@ h1,h2,h3{font-family:Sora,Inter,sans-serif;letter-spacing:-.03em;line-height:1.0
 a{color:inherit}
 
 /* ---------- kursor ---------- */
-.cur,.curd{position:fixed;left:0;top:0;z-index:400;pointer-events:none;border-radius:50%;
-  transform:translate(-50%,-50%);mix-blend-mode:difference}
-.cur{width:34px;height:34px;border:1px solid rgba(255,255,255,.55);
-  transition:width .35s var(--eout),height .35s var(--eout),background .35s var(--eout),opacity .3s}
-.curd{width:5px;height:5px;background:#fff}
-.cur.big{width:70px;height:70px;background:rgba(255,255,255,.12);border-color:transparent}
+.cur,.curd{position:fixed;left:0;top:0;z-index:400;pointer-events:none;border-radius:100px;
+  transform:translate(-50%,-50%)}
+.cur{display:flex;align-items:center;justify-content:center;
+  width:36px;height:36px;border:1px solid rgba(255,255,255,.38);background:rgba(255,255,255,.02);
+  transition:width .5s var(--eout),height .5s var(--eout),background .5s var(--eout),
+             border-color .5s var(--eout),padding .5s var(--eout)}
+/* kursor mówi, co można zrobić z tym, nad czym stoisz */
+.cur b{font-family:Sora;font-weight:600;font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;
+  color:#180d04;white-space:nowrap;opacity:0;transform:scale(.85);
+  transition:opacity .3s var(--ease),transform .45s var(--eout)}
+.curd{width:5px;height:5px;background:#fff;transition:opacity .35s,transform .45s var(--eout)}
+.cur.label{width:auto;height:46px;padding:0 22px;background:var(--flame);border-color:transparent}
+.cur.label b{opacity:1;transform:none}
+.cur.wide{width:76px;height:76px;background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16)}
+.cur.label ~ .curd,.cur.wide ~ .curd{opacity:0;transform:translate(-50%,-50%) scale(.3)}
 @media(hover:none){.cur,.curd{display:none}}
 
 /* ---------- ekran startowy ---------- */
@@ -199,12 +208,33 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
   -webkit-background-clip:text;background-clip:text;color:transparent;
   filter:brightness(1.9) contrast(1.25) saturate(1.35)}
 
-/* smuga ognia za kursorem */
-#trail{position:fixed;inset:0;z-index:110;pointer-events:none;mix-blend-mode:screen}
-@media(hover:none){#trail{display:none}}
-
-/* pochylenie kafli za kursorem */
-.tilt{transform-style:preserve-3d;will-change:transform}
+/* ---------- lista, która odsłania kadr pod kursorem ---------- */
+.peek{list-style:none;margin-top:44px;border-top:1px solid var(--line)}
+.peek li{position:relative;border-bottom:1px solid var(--line);cursor:none}
+.peek button{all:unset;cursor:none;display:flex;align-items:baseline;gap:clamp(14px,3vw,40px);
+  width:100%;padding:clamp(20px,2.6vw,30px) 0;transition:padding-left .7s var(--eout)}
+.peek li:hover button{padding-left:clamp(10px,1.6vw,26px)}
+.peek .no{font-family:Sora;font-size:12px;letter-spacing:.2em;color:var(--dim2);
+  flex:0 0 auto;transition:color .5s}
+.peek li:hover .no{color:var(--flame)}
+.peek .tt{font-family:Sora;font-weight:600;letter-spacing:-.025em;
+  font-size:clamp(20px,3vw,38px);color:#8f959d;transition:color .55s var(--ease)}
+.peek li:hover .tt{color:var(--ink)}
+.peek .dd{margin-left:auto;font-size:14px;color:var(--dim2);text-align:right;max-width:30ch;
+  opacity:0;transform:translateX(-8px);transition:opacity .55s var(--ease),transform .55s var(--eout)}
+.peek li:hover .dd{opacity:1;transform:none}
+#peekimg{position:fixed;z-index:115;width:min(340px,30vw);aspect-ratio:4/3;border-radius:16px;
+  overflow:hidden;pointer-events:none;opacity:0;transform:translate(-50%,-50%) scale(.94);
+  transition:opacity .45s var(--ease),transform .55s var(--eout);
+  box-shadow:0 30px 80px -30px rgba(0,0,0,.95);border:1px solid rgba(255,255,255,.1)}
+#peekimg.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+#peekimg img{width:100%;height:100%;object-fit:cover;display:block}
+@media(max-width:900px){
+  #peekimg{display:none}
+  .peek button,.peek li{cursor:pointer}
+  .peek .dd{opacity:1;transform:none;margin-left:0;text-align:left;max-width:none}
+  .peek button{flex-wrap:wrap;gap:8px}
+}
 
 /* rysująca się linia procesu */
 .stepsvg{position:absolute;left:0;right:0;top:19px;height:2px;overflow:visible;z-index:1}
@@ -378,7 +408,7 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
 
 <header id="hdr">
   <div class="brand">Szymański <span>Gaz Serwis</span></div>
-  <a class="mag" href="tel:+48782492609" data-mag>
+  <a class="mag" href="tel:+48782492609" data-mag data-cur="Zadzwoń">
     <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.4 21 3 13.6 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 1.7z"/></svg>
     782 492 609
   </a>
@@ -396,7 +426,7 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
         <h1 class="kin">Kocioł ma <em>działać</em>. Nie zastanawiać Cię.</h1>
         <p class="lead">Przeglądy, naprawy i montaż kotłów gazowych. Ty mówisz, co się dzieje — ja mówię, ile i kiedy.</p>
         <div class="row">
-          <a class="mag" href="tel:+48782492609" data-mag>
+          <a class="mag" href="tel:+48782492609" data-mag data-cur="Zadzwoń">
             <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.4 21 3 13.6 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 1.7z"/></svg>
             Zadzwoń: 782 492 609
           </a>
@@ -496,27 +526,47 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
 <div class="hwrap" id="hwrap">
   <div class="hsticky">
     <div class="htrack" id="htrack">
-      <article class="hcard"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M20.6 8.4a2 2 0 0 1 0 2.8l-9.4 9.4-4.2-4.2 9.4-9.4a2 2 0 0 1 2.8 0zM7 16.6 4 20l3.4-1"/></svg></div></div>
+      <article class="hcard" data-cur="Usługa"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M20.6 8.4a2 2 0 0 1 0 2.8l-9.4 9.4-4.2-4.2 9.4-9.4a2 2 0 0 1 2.8 0zM7 16.6 4 20l3.4-1"/></svg></div></div>
         <div><h3>Przegląd i konserwacja</h3><p>Coroczny serwis: czyszczenie, kontrola szczelności, pomiar spalin i ustawienie parametrów.</p></div>
         <div class="n">01</div></article>
-      <article class="hcard"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></div></div>
+      <article class="hcard" data-cur="Usługa"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></div></div>
         <div><h3>Naprawa awarii</h3><p>Kocioł zgasł, pokazuje błąd albo nie grzeje wody. Diagnoza i naprawa w umówionym terminie.</p></div>
         <div class="n">02</div></article>
-      <article class="hcard"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12h-6v-7H9v7z"/></svg></div></div>
+      <article class="hcard" data-cur="Usługa"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12h-6v-7H9v7z"/></svg></div></div>
         <div><h3>Wymiana i montaż</h3><p>Dobór kotła pod metraż i instalację, demontaż starego, montaż i uruchomienie nowego.</p></div>
         <div class="n">03</div></article>
-      <article class="hcard"><div><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div></div>
+      <article class="hcard" data-cur="Usługa"><div><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div></div>
         <div><h3>Uruchomienie i ustawienie</h3><p>Pierwsze uruchomienie po montażu, ustawienie krzywej grzewczej i temperatur pod Twój dom.</p></div>
         <div class="n">04</div></article>
-      <article class="hcard"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></div></div>
+      <article class="hcard" data-cur="Usługa"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></div></div>
         <div><h3>Czyszczenie wymiennika i palnika</h3><p>Usunięcie sadzy i osadu — realny wpływ na zużycie gazu i moc grzewczą kotła.</p></div>
         <div class="n">05</div></article>
-      <article class="hcard"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3v18M18 3v18M6 8h12M6 16h12"/></svg></div></div>
+      <article class="hcard" data-cur="Usługa"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3v18M18 3v18M6 8h12M6 16h12"/></svg></div></div>
         <div><h3>Instalacje C.O. i kotłownie</h3><p>Wykonanie instalacji centralnego ogrzewania i kompletnych kotłowni w domach jednorodzinnych.</p></div>
         <div class="n">06</div></article>
     </div>
   </div>
 </div>
+
+<section class="block">
+  <div class="reveal">
+    <div class="eyeb">Zakres przeglądu</div>
+    <h2 class="h2">Osiem rzeczy, które sprawdzam</h2>
+    <p class="sub">Najedź na pozycję, żeby zobaczyć, o czym mówię. Nic z tej listy nie jest opcjonalne — kocioł jest sprawny dopiero wtedy, gdy zgadza się wszystko naraz.</p>
+  </div>
+  <ul class="peek reveal" id="peek">
+    <li data-cur="Zobacz"><button type="button" data-img="img/3-palnik.jpg"><span class="no">01</span><span class="tt">Palnik i obraz płomienia</span><span class="dd">Równy, niebieski ogień na całej listwie</span></button></li>
+    <li data-cur="Zobacz"><button type="button" data-img="img/4-wymiennik.jpg"><span class="no">02</span><span class="tt">Wymiennik ciepła</span><span class="dd">Czyszczenie żeberek z osadu i sadzy</span></button></li>
+    <li data-cur="Zobacz"><button type="button" data-img="img/5-pompa.jpg"><span class="no">03</span><span class="tt">Pompa i ciśnienie</span><span class="dd">Praca pompy, wskazanie manometru, odpowietrzenie</span></button></li>
+    <li data-cur="Zobacz"><button type="button" data-img="img/2-obudowa.jpg"><span class="no">04</span><span class="tt">Szczelność połączeń</span><span class="dd">Gaz i woda — każde złącze pod obudową</span></button></li>
+    <li data-cur="Zobacz"><button type="button" data-img="img/6-brudny.jpg"><span class="no">05</span><span class="tt">Osad i korozja</span><span class="dd">To, co zbiera się przez rok bez serwisu</span></button></li>
+    <li data-cur="Zobacz"><button type="button" data-img="img/7-final.jpg"><span class="no">06</span><span class="tt">Sterownik i parametry</span><span class="dd">Krzywa grzewcza i temperatury pod Twój dom</span></button></li>
+    <li data-cur="Zobacz"><button type="button" data-img="img/1-zamkniety.jpg"><span class="no">07</span><span class="tt">Odprowadzenie spalin</span><span class="dd">Drożność i szczelność przewodu kominowego</span></button></li>
+    <li data-cur="Zobacz"><button type="button" data-img="img/0-hero.jpg"><span class="no">08</span><span class="tt">Praca pod obciążeniem</span><span class="dd">Kontrolne uruchomienie i pomiar po regulacji</span></button></li>
+  </ul>
+</section>
+
+<div id="peekimg"><img alt=""></div>
 
 <section class="block grid-bg">
   <div class="reveal">
@@ -524,7 +574,7 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
     <h2 class="h2">Ten sam wymiennik, rok różnicy</h2>
     <p class="sub">Złap suwak i przeciągnij. Po lewej stan przed czyszczeniem, po prawej po serwisie. Ta różnica to Twój rachunek za gaz.</p>
   </div>
-  <div class="cmp reveal" id="cmp">
+  <div class="cmp reveal" id="cmp" data-cur="Przeciągnij">
     <img src="img/6-brudny.jpg" alt="Zaniedbany wymiennik pokryty sadzą">
     <img class="after" src="img/4-wymiennik.jpg" alt="Wymiennik po czyszczeniu">
     <div class="tag tl">Przed</div>
@@ -568,15 +618,15 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
     <h2 class="h2">To, o co pytacie przez telefon</h2>
   </div>
   <div class="faq reveal" id="faq">
-    <div class="fq"><button type="button">Jak często robi się przegląd kotła?<span class="pm"></span></button>
+    <div class="fq" data-cur="Rozwiń"><button type="button">Jak często robi się przegląd kotła?<span class="pm"></span></button>
       <div class="ans"><p>Raz w roku, najlepiej przed sezonem grzewczym — czyli latem albo wczesną jesienią. Producenci kotłów uzależniają od tego gwarancję, a ubezpieczyciel może pytać o przegląd przy szkodzie. Poza gwarancją chodzi o zwykłą arytmetykę: zabrudzony wymiennik zużywa więcej gazu przez całą zimę.</p></div></div>
-    <div class="fq"><button type="button">Ile kosztuje przegląd?<span class="pm"></span></button>
+    <div class="fq" data-cur="Rozwiń"><button type="button">Ile kosztuje przegląd?<span class="pm"></span></button>
       <div class="ans"><p>Cena zależy od modelu kotła i tego, w jakim jest stanie. Dlatego podaję ją przez telefon, zanim przyjadę — wystarczy, że powiesz, jaki masz kocioł. Nie ma u mnie wyceniania „na miejscu zobaczymy".</p></div></div>
-    <div class="fq"><button type="button">Kocioł pokazuje błąd i zgasł. Co robić?<span class="pm"></span></button>
+    <div class="fq" data-cur="Rozwiń"><button type="button">Kocioł pokazuje błąd i zgasł. Co robić?<span class="pm"></span></button>
       <div class="ans"><p>Zadzwoń i przeczytaj mi kod błędu z wyświetlacza. Duża część usterek to sprawy, które da się wstępnie ocenić przez telefon — czasem wystarczy uzupełnić ciśnienie albo odblokować kocioł, a czasem potrzebna jest część i lepiej, żebym przyjechał od razu z nią.</p></div></div>
-    <div class="fq"><button type="button">Robisz też wymianę starego kotła na nowy?<span class="pm"></span></button>
+    <div class="fq" data-cur="Rozwiń"><button type="button">Robisz też wymianę starego kotła na nowy?<span class="pm"></span></button>
       <div class="ans"><p>Tak. Dobieram kocioł pod metraż domu i istniejącą instalację, demontuję stary, montuję i uruchamiam nowy oraz ustawiam parametry. Wykonuję też całe instalacje centralnego ogrzewania i kotłownie w domach jednorodzinnych.</p></div></div>
-    <div class="fq"><button type="button">Na jaki obszar dojeżdżasz?<span class="pm"></span></button>
+    <div class="fq" data-cur="Rozwiń"><button type="button">Na jaki obszar dojeżdżasz?<span class="pm"></span></button>
       <div class="ans"><p>Gniezno i okolice — Witkowo, Trzemeszno, Czerniejewo, Kłecko i sąsiednie miejscowości. Jeśli nie masz pewności, czy dojadę pod Twój adres, po prostu zadzwoń i zapytaj.</p></div></div>
   </div>
 </section>
@@ -587,7 +637,7 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
   <p class="sub">Najszybciej przez telefon. Powiedz, jaki masz kocioł i co robi — dostaniesz konkretną odpowiedź, ile to kosztuje i kiedy mogę przyjechać.</p>
   <div class="ctagrid">
     <div>
-      <a class="bigphone" href="tel:+48782492609" data-mag>782 492 609</a>
+      <a class="bigphone" href="tel:+48782492609" data-mag data-cur="Zadzwoń">782 492 609</a>
       <div class="chips" style="margin-top:22px"><i>Gniezno</i><i>Witkowo</i><i>Trzemeszno</i><i>Czerniejewo</i><i>Kłecko</i><i>okolice</i></div>
     </div>
     <div class="meta">
@@ -997,14 +1047,26 @@ var cx=innerWidth/2,cy=innerHeight/2,px=cx,py=cy;
   curd.style.transform='translate('+cx+'px,'+cy+'px) translate(-50%,-50%)';
   requestAnimationFrame(cloop);
 })();
-document.querySelectorAll('a,button,[data-mag]').forEach(function(el){
-  el.addEventListener('pointerenter',function(){cur.classList.add('big')});
-  el.addEventListener('pointerleave',function(){cur.classList.remove('big');
+/* kursor kontekstowy: nad różnymi rzeczami pokazuje, co można zrobić */
+var curLabel=document.createElement('b');cur.appendChild(curLabel);
+function setCur(mode,txt){
+  cur.classList.toggle('label',mode==='label');
+  cur.classList.toggle('wide',mode==='wide');
+  if(mode==='label')curLabel.textContent=txt;
+}
+document.querySelectorAll('[data-cur]').forEach(function(el){
+  el.addEventListener('pointerenter',function(){setCur('label',el.dataset.cur)});
+  el.addEventListener('pointerleave',function(){setCur('')});
+});
+document.querySelectorAll('a,button').forEach(function(el){
+  if(el.hasAttribute('data-cur')||el.closest('[data-cur]'))return;
+  el.addEventListener('pointerenter',function(){setCur('wide')});
+  el.addEventListener('pointerleave',function(){setCur('');
     if(el.hasAttribute('data-mag'))el.style.transform=''});
   if(el.hasAttribute('data-mag')){
     el.addEventListener('pointermove',function(e){
       var r=el.getBoundingClientRect();
-      el.style.transform='translate('+((e.clientX-r.left-r.width/2)*0.22)+'px,'+((e.clientY-r.top-r.height/2)*0.3)+'px)';
+      el.style.transform='translate('+((e.clientX-r.left-r.width/2)*0.2)+'px,'+((e.clientY-r.top-r.height/2)*0.28)+'px)';
     });
   }
 });
@@ -1084,53 +1146,35 @@ addEventListener('resize',function(){
   })();
 })();
 
-/* ===== smuga ognia za kursorem ===== */
+/* ===== lista odsłaniająca kadr pod kursorem ===== */
 (function(){
-  if(matchMedia('(hover:none)').matches)return;
-  var cv=document.createElement('canvas');cv.id='trail';document.body.appendChild(cv);
-  var x=cv.getContext('2d'),W=0,H=0,ps=[],lx=null,ly=null;
-  function rs(){W=cv.width=innerWidth;H=cv.height=innerHeight}
-  rs();addEventListener('resize',rs);
-  addEventListener('pointermove',function(e){
-    if(lx!==null){
-      var d=Math.hypot(e.clientX-lx,e.clientY-ly);
-      var n=Math.min(4,Math.floor(d/9));
-      for(var i=0;i<n;i++){
-        ps.push({x:e.clientX+(Math.random()-.5)*8,y:e.clientY+(Math.random()-.5)*8,
-          vx:(Math.random()-.5)*.5,vy:-.35-Math.random()*.5,
-          l:1,r:2.5+Math.random()*4.5});
-      }
-    }
-    lx=e.clientX;ly=e.clientY;
-  },{passive:true});
+  var box=document.getElementById('peek'),wrap=document.getElementById('peekimg');
+  if(!box||!wrap||matchMedia('(max-width:900px)').matches)return;
+  var im=wrap.querySelector('img');
+  var tx=0,ty=0,ix=0,iy=0,on=false,cur='';
+  box.querySelectorAll('button').forEach(function(b){
+    b.addEventListener('pointerenter',function(e){
+      var src=b.dataset.img;
+      if(src!==cur){cur=src;im.src=src}
+      // bez tego podgląd doleciałby z rogu ekranu przy pierwszym najechaniu
+      if(!on){aim(e.clientX,e.clientY);ix=tx;iy=ty;wrap.style.left=ix+'px';wrap.style.top=iy+'px'}
+      on=true;wrap.classList.add('on');
+    });
+    b.addEventListener('pointerleave',function(){on=false;wrap.classList.remove('on')});
+  });
+  function aim(cxx,cyy){
+    var w=wrap.offsetWidth||320,h=wrap.offsetHeight||240;
+    var side=(cxx>innerWidth*0.55)?-1:1;          // przy prawej krawędzi kadr idzie w lewo
+    tx=R(cxx+side*(w*0.5+70),w*0.5+12,innerWidth-w*0.5-12);
+    ty=R(cyy,h*0.5+12,innerHeight-h*0.5-12);
+  }
+  addEventListener('pointermove',function(e){aim(e.clientX,e.clientY)},{passive:true});
   (function loop(){
-    x.clearRect(0,0,W,H);
-    for(var i=ps.length-1;i>=0;i--){
-      var p=ps[i];
-      p.l-=0.028;p.x+=p.vx;p.y+=p.vy;p.vy-=0.012;
-      if(p.l<=0){ps.splice(i,1);continue}
-      var g=x.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r*(1+(1-p.l)*2.2));
-      g.addColorStop(0,'rgba(255,190,110,'+(p.l*0.5)+')');
-      g.addColorStop(.45,'rgba(255,120,40,'+(p.l*0.22)+')');
-      g.addColorStop(1,'rgba(255,80,20,0)');
-      x.fillStyle=g;x.beginPath();
-      x.arc(p.x,p.y,p.r*(1+(1-p.l)*2.2),0,6.2832);x.fill();
-    }
-    if(ps.length>320)ps.splice(0,ps.length-320);
+    ix+=(tx-ix)*0.12;iy+=(ty-iy)*0.12;
+    if(on){wrap.style.left=ix+'px';wrap.style.top=iy+'px'}
     requestAnimationFrame(loop);
   })();
 })();
-
-/* ===== pochylenie kafli za kursorem ===== */
-document.querySelectorAll('.bx,.hcard,.q').forEach(function(el){
-  el.classList.add('tilt');
-  el.addEventListener('pointermove',function(e){
-    var r=el.getBoundingClientRect();
-    var px=(e.clientX-r.left)/r.width-.5, py=(e.clientY-r.top)/r.height-.5;
-    el.style.transform='perspective(900px) rotateX('+(-py*5.5).toFixed(2)+'deg) rotateY('+(px*6.5).toFixed(2)+'deg) translateY(-4px)';
-  });
-  el.addEventListener('pointerleave',function(){el.style.transform=''});
-});
 
 /* ===== linia rysująca się przez kroki ===== */
 (function(){
