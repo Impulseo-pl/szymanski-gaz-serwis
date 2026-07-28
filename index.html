@@ -256,7 +256,7 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
 /* ---------- marquee ---------- */
 .mq{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
   padding:20px 0;background:var(--bg)}
-.mq div{display:flex;gap:44px;width:max-content;animation:mqm 34s linear infinite}
+.mq div{display:flex;gap:44px;width:max-content;animation:mqm 62s linear infinite}
 .mq span{font-family:Sora;font-weight:200;font-size:clamp(20px,3vw,34px);color:#20252b;white-space:nowrap;
   letter-spacing:-.02em}
 .mq span b{font-weight:600;color:var(--flame);opacity:.85}
@@ -280,7 +280,7 @@ section.block{padding:clamp(88px,13vh,150px) clamp(20px,6.5vw,104px);border-top:
 
 /* usługi — pas przewijany w poziomie */
 #uslugi{padding-bottom:0}
-.hwrap{position:relative;height:340vh}
+.hwrap{position:relative;height:480vh}
 .hsticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden}
 .htrack{display:flex;gap:22px;padding:0 clamp(20px,6.5vw,104px);will-change:transform}
 .hcard{position:relative;flex:0 0 min(420px,80vw);height:min(460px,62vh);
@@ -812,7 +812,7 @@ function intro(){
   setTimeout(function(){
     eb.style.transition='transform 1s var(--eout)';eb.style.transform='none';
     ws.forEach(function(w,k){
-      w.style.transition='transform 1.05s var(--eout) '+(0.1+k*0.055)+'s';
+      w.style.transition='transform 1.3s var(--eout) '+(0.14+k*0.075)+'s';
       w.style.transform='none';
     });
     lead.style.transition='opacity .9s var(--eout) '+(0.35+ws.length*0.05)+'s';lead.style.opacity=1;
@@ -849,7 +849,7 @@ function frame(){
   var rg=film.offsetHeight-innerHeight;
   var raw=R((scrollY-film.offsetTop)/rg,0,1);
   if(smooth===null)smooth=raw;
-  smooth+=(raw-smooth)*0.13;
+  smooth+=(raw-smooth)*0.085;
   var dv=Math.abs(raw-lastRaw); lastRaw=raw;
   vel+=(Math.min(dv*26,1)-vel)*0.16;
   mx+=(tmx-mx)*0.06; my+=(tmy-my)*0.06;
@@ -932,7 +932,7 @@ function frame(){
         ws.forEach(function(w,q){
           w.style.transition='none';w.style.transform='translateY(110%)';
           requestAnimationFrame(function(){
-            w.style.transition='transform 1s var(--eout) '+(q*0.045)+'s';w.style.transform='none';
+            w.style.transition='transform 1.25s var(--eout) '+(q*0.065)+'s';w.style.transform='none';
           });
         });
       }
@@ -1163,7 +1163,8 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
   });
 });
 
-function sizeFilm(){film.style.height=(TOTAL*105+100)+'vh'}
+/* ile ekranu scrolla przypada na jednostkę osi — im więcej, tym spokojniej płynie film */
+function sizeFilm(){film.style.height=(TOTAL*178+100)+'vh'}
 sizeFilm();addEventListener('resize',sizeFilm);
 })();
 </script>
