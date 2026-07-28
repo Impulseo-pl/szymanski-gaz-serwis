@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Szymański Gaz Serwis — serwis kotłów gazowych, Gniezno</title>
+<meta name="description" content="Przeglądy, naprawy i montaż kotłów gazowych. Gniezno, Witkowo, Trzemeszno, Czerniejewo, Kłecko. Kamil Szymański, 4,8/5 z 45 opinii Google.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#08090b;
+  --bg2:#0e1013;
+  --ink:#f2f0ee;
+  --dim:#9aa0a8;
+  --dim2:#6d747c;
+  --line:#1c2027;
+  --flame:#ff8b3d;
+  --flame-soft:#ffb27a;
+  --cool:#5aa9ff;
+  color-scheme:dark;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto}
+body{
+  background:var(--bg);color:var(--ink);
+  font:16px/1.65 Inter,-apple-system,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,.num{font-family:Sora,Inter,sans-serif;letter-spacing:-0.025em;line-height:1.05}
+
+/* ---------- ładowanie ---------- */
+#boot{position:fixed;inset:0;z-index:200;background:var(--bg);display:flex;
+  align-items:center;justify-content:center;flex-direction:column;gap:22px;
+  transition:opacity .7s ease}
+#boot.done{opacity:0;pointer-events:none}
+#boot .bname{font-family:Sora;font-weight:300;font-size:clamp(18px,3vw,24px);letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}
+#boot .bar{width:min(240px,46vw);height:2px;background:#1a1d22;overflow:hidden;border-radius:2px}
+#boot .bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--flame),var(--flame-soft));transition:width .25s ease}
+
+/* ---------- pasek górny ---------- */
+header{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px clamp(18px,4vw,44px);
+  transition:background .4s ease,backdrop-filter .4s ease,border-color .4s;
+  border-bottom:1px solid transparent}
+header.stuck{background:rgba(8,9,11,.78);backdrop-filter:blur(14px);border-bottom-color:var(--line)}
+.brand{font-family:Sora;font-weight:600;font-size:15px;letter-spacing:.02em}
+.brand span{color:var(--flame)}
+.callbtn{display:inline-flex;align-items:center;gap:9px;
+  padding:11px 20px;border-radius:100px;text-decoration:none;
+  background:var(--flame);color:#1a0d04;font-weight:600;font-size:14.5px;
+  transition:transform .25s ease,box-shadow .25s ease;
+  box-shadow:0 6px 26px -10px rgba(255,139,61,.9)}
+.callbtn:hover{transform:translateY(-2px);box-shadow:0 12px 34px -10px rgba(255,139,61,1)}
+.callbtn svg{width:15px;height:15px;fill:currentColor}
+
+/* ---------- sceny ---------- */
+.scene{position:relative}
+.sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+.sticky canvas,.sticky .still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.vig{position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(120% 80% at 50% 45%,transparent 30%,rgba(4,5,7,.55) 78%,rgba(4,5,7,.9) 100%)}
+.grad-b{position:absolute;left:0;right:0;bottom:0;height:70%;pointer-events:none;
+  background:linear-gradient(transparent,rgba(5,6,8,.55) 42%,rgba(5,6,8,.93) 82%,rgba(5,6,8,.97))}
+.grad-t{position:absolute;left:0;right:0;top:0;height:30%;pointer-events:none;
+  background:linear-gradient(rgba(6,7,9,.75),transparent)}
+/* przyciemnienie od strony tekstu — bez tego biały napis ginie na jasnej obudowie */
+.shade-l{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(96deg,rgba(5,6,8,.86) 0%,rgba(5,6,8,.66) 22%,rgba(5,6,8,.3) 40%,rgba(5,6,8,.06) 56%,transparent 68%)}
+.shade-b{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent 30%,rgba(5,6,8,.5) 58%,rgba(5,6,8,.93) 88%)}
+
+.cap{position:absolute;z-index:5;left:clamp(20px,6vw,90px);right:clamp(20px,6vw,90px);
+  bottom:clamp(70px,12vh,130px);max-width:660px;
+  opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.3,1)}
+.cap.in{opacity:1;transform:none}
+.cap .kicker{font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--flame);margin-bottom:14px;font-weight:600}
+.cap h2{font-size:clamp(28px,5.2vw,60px);font-weight:600;margin-bottom:14px}
+.cap p{font-size:clamp(15px,1.6vw,19px);color:#c3c8cf;max-width:52ch}
+
+/* ---------- hero ---------- */
+.hero-txt{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;
+  justify-content:center;padding:0 clamp(22px,7vw,110px)}
+.hero-txt .eyebrow{font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-bottom:20px}
+.hero-txt h1{font-size:clamp(36px,6.4vw,86px);font-weight:600;max-width:11ch;
+  text-shadow:0 4px 40px rgba(0,0,0,.85),0 1px 6px rgba(0,0,0,.6)}
+.hero-txt .eyebrow,.hero-txt .lead{text-shadow:0 2px 18px rgba(0,0,0,.9)}
+.cap h2,.cap p,.cap .kicker{text-shadow:0 3px 26px rgba(0,0,0,.8)}
+.hero-txt h1 em{font-style:normal;color:var(--flame)}
+.hero-txt .lead{margin-top:22px;font-size:clamp(15.5px,1.9vw,21px);color:#c7ccd3;max-width:40ch}
+.hero-txt .row{margin-top:36px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+.ghost{display:inline-flex;align-items:center;gap:9px;padding:11px 20px;border-radius:100px;
+  border:1px solid #2b3138;color:var(--ink);text-decoration:none;font-size:14.5px;
+  transition:border-color .25s,background .25s}
+.ghost:hover{border-color:#49515b;background:rgba(255,255,255,.04)}
+.hero-fade{opacity:1;transition:opacity .4s linear}
+.scrollhint{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);z-index:6;
+  font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim2);
+  display:flex;flex-direction:column;align-items:center;gap:10px}
+.scrollhint i{display:block;width:1px;height:38px;background:linear-gradient(var(--dim2),transparent);animation:drop 2.1s ease-in-out infinite}
+@keyframes drop{0%{transform:scaleY(.2);transform-origin:top;opacity:0}45%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1);transform-origin:bottom;opacity:0}}
+
+/* ---------- bloki tekstowe ---------- */
+.say{padding:clamp(110px,20vh,190px) clamp(22px,7vw,110px);max-width:1100px}
+.say p{font-family:Sora;font-weight:300;font-size:clamp(26px,4.4vw,54px);line-height:1.18;letter-spacing:-.02em}
+.say p b{font-weight:600;color:var(--flame)}
+.say .small{font-family:Inter;font-weight:400;font-size:clamp(15px,1.7vw,19px);color:var(--dim);margin-top:26px;max-width:56ch;line-height:1.65}
+
+/* ---------- części pod obudową ---------- */
+.parts{position:absolute;z-index:6;right:clamp(20px,6vw,90px);top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:2px;width:min(310px,74vw)}
+.part{padding:15px 18px;border-left:2px solid #23272e;
+  opacity:.28;transition:opacity .5s ease,border-color .5s ease,transform .5s ease}
+.part.on{opacity:1;border-left-color:var(--flame);transform:translateX(4px)}
+.part b{display:block;font-family:Sora;font-weight:600;font-size:16px;margin-bottom:3px}
+.part span{font-size:13.5px;color:var(--dim)}
+
+/* ---------- sekcje treści ---------- */
+section.block{padding:clamp(90px,14vh,150px) clamp(22px,7vw,110px);border-top:1px solid var(--line)}
+.eyeb{font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--flame);font-weight:600;margin-bottom:16px}
+.h2{font-size:clamp(30px,4.6vw,52px);font-weight:600;margin-bottom:18px;max-width:20ch}
+.sub{color:var(--dim);font-size:clamp(15px,1.6vw,18px);max-width:58ch}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:52px}
+@media(max-width:1080px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:640px){.cards{grid-template-columns:1fr}}
+.card{background:linear-gradient(180deg,#101317,#0c0e11);border:1px solid var(--line);
+  border-radius:14px;padding:26px 24px 28px;transition:border-color .35s ease,transform .35s ease}
+.card:hover{border-color:#2e343d;transform:translateY(-3px)}
+.card .ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,139,61,.1);border:1px solid rgba(255,139,61,.22);margin-bottom:18px}
+.card .ic svg{width:18px;height:18px;stroke:var(--flame);fill:none;stroke-width:1.7}
+.card h3{font-size:18.5px;font-weight:600;margin-bottom:9px;line-height:1.28}
+.card p{font-size:14.5px;color:var(--dim);line-height:1.6}
+
+/* ---------- opinie ---------- */
+.rate{display:flex;align-items:baseline;gap:16px;margin-bottom:8px;flex-wrap:wrap}
+.rate .num{font-size:clamp(52px,9vw,96px);font-weight:700;letter-spacing:-.04em}
+.stars{color:var(--flame);font-size:19px;letter-spacing:3px}
+.rate .cnt{color:var(--dim);font-size:15px}
+.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin-top:44px}
+.q{background:#0d0f13;border:1px solid var(--line);border-radius:14px;padding:26px 24px}
+.q p{font-size:15.5px;line-height:1.6;color:#d5d9de}
+.q cite{display:block;margin-top:16px;font-style:normal;font-size:13.5px;color:var(--dim2)}
+.q .s{color:var(--flame);font-size:13px;letter-spacing:2px;margin-bottom:14px}
+
+/* ---------- kontakt ---------- */
+#kontakt{background:linear-gradient(180deg,#0a0c0f,#07080a)}
+.ctagrid{display:grid;grid-template-columns:1.15fr .85fr;gap:60px;align-items:start;margin-top:46px}
+.bigphone{font-family:Sora;font-weight:700;font-size:clamp(32px,6.4vw,68px);letter-spacing:-.035em;
+  color:var(--ink);text-decoration:none;display:inline-block;transition:color .3s}
+.bigphone:hover{color:var(--flame)}
+.meta{display:flex;flex-direction:column;gap:22px}
+.meta div b{display:block;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim2);margin-bottom:7px;font-weight:600}
+.meta div span,.meta div a{font-size:16px;color:#d8dce1;text-decoration:none}
+.meta div a:hover{color:var(--flame)}
+.area{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.area i{font-style:normal;font-size:13px;padding:6px 13px;border:1px solid var(--line);border-radius:100px;color:var(--dim)}
+
+footer{padding:34px clamp(22px,7vw,110px);border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--dim2);font-size:13px}
+
+@media(max-width:700px){
+  /* na wąskim ekranie gradient poziomy nie zdąży przyciemnić — kładziemy pionowy */
+  .shade-l{background:linear-gradient(180deg,rgba(5,6,8,.82) 0%,rgba(5,6,8,.5) 30%,rgba(5,6,8,.62) 58%,rgba(5,6,8,.93) 100%)}
+  header{padding:13px 16px}
+  .brand{font-size:13.5px}
+  .callbtn{padding:9px 15px;font-size:13.5px;gap:7px}
+  .hero-txt{padding:0 22px}
+  .hero-txt h1{max-width:none}
+  .scrollhint{display:none}
+}
+@media(max-width:860px){
+  .ctagrid{grid-template-columns:1fr;gap:44px}
+  .parts{right:auto;left:clamp(20px,6vw,90px);top:auto;bottom:clamp(80px,14vh,140px);transform:none;width:min(300px,80vw)}
+  .cap{bottom:clamp(40px,8vh,90px)}
+  .part{padding:11px 15px}
+  .part b{font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div id="boot">
+  <div class="bname">Szymański Gaz Serwis</div>
+  <div class="bar"><i></i></div>
+</div>
+
+<header id="hdr">
+  <div class="brand">Szymański <span>Gaz Serwis</span></div>
+  <a class="callbtn" href="tel:+48782492609">
+    <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.4 21 3 13.6 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 1.7z"/></svg>
+    782 492 609
+  </a>
+</header>
+
+<!-- ============ HERO ============ -->
+<section class="scene" id="s-hero" style="height:320vh">
+  <div class="sticky">
+    <canvas data-seq="h" data-n="50" data-pad="3"></canvas>
+    <div class="grad-t"></div><div class="vig"></div><div class="shade-l"></div>
+    <div class="hero-txt hero-fade" id="heroTxt">
+      <div class="eyebrow">Gniezno i okolice · od ręki</div>
+      <h1>Kocioł ma <em>działać</em>. Nie zastanawiać Cię.</h1>
+      <p class="lead">Przeglądy, naprawy i montaż kotłów gazowych. Ty mówisz, co się dzieje — ja mówię, ile i kiedy.</p>
+      <div class="row">
+        <a class="callbtn" href="tel:+48782492609">
+          <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.4 21 3 13.6 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 1.7z"/></svg>
+          Zadzwoń: 782 492 609
+        </a>
+        <a class="ghost" href="#uslugi">Co robię</a>
+      </div>
+    </div>
+    <div class="scrollhint hero-fade">przewiń<i></i></div>
+  </div>
+</section>
+
+<div class="say">
+  <p>Wisi u Ciebie na ścianie od lat.<br><b>Wiesz, co jest w środku?</b></p>
+  <p class="small">Przewiń dalej — pokażę Ci, co dokładnie sprawdzam podczas przeglądu i dlaczego to ma znaczenie dla Twojego rachunku za gaz.</p>
+</div>
+
+<!-- ============ 1. KOCIOŁ ZAMKNIĘTY ============ -->
+<section class="scene" style="height:190vh">
+  <div class="sticky">
+    <img class="still" data-par src="img/1-zamkniety.jpg" alt="Kocioł gazowy zawieszony na ścianie">
+    <div class="vig"></div><div class="grad-b"></div>
+    <div class="cap">
+      <div class="kicker">Punkt wyjścia</div>
+      <h2>Z zewnątrz zawsze wygląda tak samo</h2>
+      <p>Biała obudowa i cicha praca nie mówią nic o tym, w jakim stanie jest urządzenie w środku. Dlatego przegląd to nie formalność.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. OBUDOWA ZDJĘTA ============ -->
+<section class="scene" id="s-parts" style="height:250vh">
+  <div class="sticky">
+    <img class="still" data-par src="img/2-obudowa.jpg" alt="Kocioł ze zdjętą obudową">
+    <div class="vig"></div><div class="grad-b"></div>
+    <div class="cap">
+      <div class="kicker">Pod pokrywą</div>
+      <h2>Pracują tu cztery rzeczy</h2>
+    </div>
+    <div class="parts">
+      <div class="part" data-at="0.10"><b>Palnik</b><span>Tu powstaje ciepło</span></div>
+      <div class="part" data-at="0.35"><b>Wymiennik</b><span>Oddaje je wodzie</span></div>
+      <div class="part" data-at="0.60"><b>Pompa</b><span>Rozprowadza po grzejnikach</span></div>
+      <div class="part" data-at="0.82"><b>Sterownik</b><span>Pilnuje parametrów</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. PALNIK (animacja) ============ -->
+<section class="scene" style="height:300vh">
+  <div class="sticky">
+    <canvas data-seq="p" data-n="50" data-pad="3"></canvas>
+    <div class="vig"></div><div class="grad-b"></div>
+    <div class="cap">
+      <div class="kicker">Serce urządzenia</div>
+      <h2>Płomień musi być równy i niebieski</h2>
+      <p>Żółty, kopcący ogień to znak, że mieszanka jest źle ustawiona — palisz więcej gazu, a ciepła masz mniej. Ustawienie palnika to podstawa przeglądu.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. WYMIENNIK ============ -->
+<section class="scene" style="height:190vh">
+  <div class="sticky">
+    <img class="still" data-par src="img/4-wymiennik.jpg" alt="Czysty miedziany wymiennik ciepła">
+    <div class="vig"></div><div class="grad-b"></div>
+    <div class="cap">
+      <div class="kicker">Wymiennik</div>
+      <h2>Czysta miedź oddaje ciepło wodzie</h2>
+      <p>Tak wygląda wymiennik po czyszczeniu. Każdy milimetr osadu na tych żeberkach to ciepło, które ucieka kominem zamiast trafić do grzejników.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. POMPA ============ -->
+<section class="scene" style="height:190vh">
+  <div class="sticky">
+    <img class="still" data-par src="img/5-pompa.jpg" alt="Pompa obiegowa i manometr instalacji">
+    <div class="vig"></div><div class="grad-b"></div>
+    <div class="cap">
+      <div class="kicker">Instalacja</div>
+      <h2>Ciśnienie i obieg pod kontrolą</h2>
+      <p>Sprawdzam pompę, ciśnienie na manometrze i szczelność połączeń. Spadające ciśnienie to najczęstszy powód zimnych grzejników na piętrze.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. ZWROT AKCJI ============ -->
+<section class="scene" style="height:300vh">
+  <div class="sticky">
+    <canvas data-seq="b" data-n="34" data-pad="3"></canvas>
+    <div class="vig"></div><div class="grad-b"></div>
+    <div class="cap">
+      <div class="kicker">A tak kończy się rok bez przeglądu</div>
+      <h2>To ten sam wymiennik</h2>
+      <p>Sadza, korozja i osad. Kocioł jeszcze grzeje, ale zużywa więcej gazu, częściej się blokuje, a naprawa kosztuje wielokrotnie więcej niż przegląd.</p>
+    </div>
+  </div>
+</section>
+
+<div class="say">
+  <p>Przegląd raz w roku jest tańszy niż <b>jedna awaria w styczniu.</b></p>
+  <p class="small">I szybszy. Przegląd to jedna wizyta w umówionym terminie. Awaria to zimny dom, oczekiwanie na części i rachunek, którego nikt nie planował.</p>
+</div>
+
+<!-- ============ 7. FINAŁ ============ -->
+<section class="scene" style="height:280vh">
+  <div class="sticky">
+    <canvas data-seq="f" data-n="50" data-pad="3"></canvas>
+    <div class="vig"></div><div class="grad-b"></div>
+    <div class="cap">
+      <div class="kicker">Po serwisie</div>
+      <h2>Zielona dioda i spokój na cały sezon</h2>
+      <p>Wyczyszczony wymiennik, ustawiony palnik, sprawdzona szczelność i ciśnienie. Zostawiam kocioł w stanie, w jakim powinien pracować.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ USŁUGI ============ -->
+<section class="block" id="uslugi">
+  <div class="eyeb">Zakres usług</div>
+  <h2 class="h2">Kotły gazowe — od przeglądu po montaż</h2>
+  <p class="sub">Pracuję na kotłach wszystkich popularnych marek. Jeśli nie wiesz, co się dzieje z Twoim — zadzwoń i opisz objawy, zwykle wiem już przez telefon.</p>
+  <div class="cards">
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M20.6 8.4a2 2 0 0 1 0 2.8l-9.4 9.4-4.2-4.2 9.4-9.4a2 2 0 0 1 2.8 0zM7 16.6 4 20l3.4-1"/></svg></div>
+      <h3>Przegląd i konserwacja</h3><p>Coroczny serwis: czyszczenie, kontrola szczelności, pomiar spalin i ustawienie parametrów.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></div>
+      <h3>Naprawa awarii</h3><p>Kocioł zgasł, pokazuje błąd albo nie grzeje wody. Diagnoza i naprawa w umówionym terminie.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12h-6v-7H9v7z"/></svg></div>
+      <h3>Wymiana i montaż</h3><p>Dobór kotła pod metraż i instalację, demontaż starego, montaż i uruchomienie nowego.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+      <h3>Uruchomienie i ustawienie</h3><p>Pierwsze uruchomienie po montażu, ustawienie krzywej grzewczej i temperatur pod Twój dom.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></div>
+      <h3>Czyszczenie wymiennika i palnika</h3><p>Usunięcie sadzy i osadu — realny wpływ na zużycie gazu i moc grzewczą kotła.</p></div>
+    <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3v18M18 3v18M6 8h12M6 16h12"/></svg></div>
+      <h3>Instalacje C.O. i kotłownie</h3><p>Wykonanie instalacji centralnego ogrzewania i kompletnych kotłowni w domach jednorodzinnych.</p></div>
+  </div>
+</section>
+
+<!-- ============ OPINIE ============ -->
+<section class="block">
+  <div class="eyeb">Opinie w Google</div>
+  <div class="rate">
+    <div class="num">4,8</div>
+    <div>
+      <div class="stars">★★★★★</div>
+      <div class="cnt">45 opinii klientów z Gniezna i okolic</div>
+    </div>
+  </div>
+  <div class="quotes">
+    <div class="q"><div class="s">★★★★★</div><p>„Pełen profesjonalizm i błyskawiczna reakcja. Wszystko rzeczowo wyjaśnione."</p><cite>Beata Sroczyńska</cite></div>
+    <div class="q"><div class="s">★★★★★</div><p>„Fachowa wiedza i sprawna realizacja usługi. Wszystko wykonane terminowo."</p><cite>Tomasz Jezierski</cite></div>
+    <div class="q"><div class="s">★★★★★</div><p>„Godny polecenia. Wszystko w umówionym terminie."</p><cite>Jakub Kania</cite></div>
+  </div>
+</section>
+
+<!-- ============ KONTAKT ============ -->
+<section class="block" id="kontakt">
+  <div class="eyeb">Kontakt</div>
+  <h2 class="h2">Opisz, co się dzieje z kotłem</h2>
+  <p class="sub">Najszybciej przez telefon. Powiedz, jaki masz kocioł i co robi — dostaniesz konkretną odpowiedź, ile to kosztuje i kiedy mogę przyjechać.</p>
+  <div class="ctagrid">
+    <div>
+      <a class="bigphone" href="tel:+48782492609">782 492 609</a>
+      <div class="area">
+        <i>Gniezno</i><i>Witkowo</i><i>Trzemeszno</i><i>Czerniejewo</i><i>Kłecko</i><i>okolice</i>
+      </div>
+    </div>
+    <div class="meta">
+      <div><b>E-mail</b><a href="mailto:kamilszymanski123@vp.pl">kamilszymanski123@vp.pl</a></div>
+      <div><b>Adres</b><span>ul. Swarzędzka 25<br>62-200 Gniezno</span></div>
+      <div><b>Serwisant</b><span>Kamil Szymański</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>Szymański Gaz Serwis · Kamil Szymański · Gniezno</div>
+  <div>Serwis kotłów gazowych</div>
+</footer>
+
+<script>
+(function(){
+  var seqs = {
+    h:{pre:'klatki/h',n:50},
+    p:{pre:'klatki/p',n:50},
+    b:{pre:'klatki/b',n:34},
+    f:{pre:'klatki/f',n:50}
+  };
+  var narrow = window.matchMedia('(max-width:700px)').matches;
+  var step = narrow ? 2 : 1;              // na telefonie co druga klatka = połowa transferu
+  var store = {};
+
+  function pad(n){return ('000'+n).slice(-3)}
+  function listFor(k){
+    var out=[],s=seqs[k];
+    for(var i=1;i<=s.n;i+=step) out.push(s.pre+pad(i)+'.jpg');
+    if(out[out.length-1]!==s.pre+pad(s.n)+'.jpg') out.push(s.pre+pad(s.n)+'.jpg');
+    return out;
+  }
+  function load(list,onEach){
+    var imgs=[],done=0;
+    list.forEach(function(src,i){
+      var im=new Image();
+      im.onload=im.onerror=function(){done++;onEach&&onEach(done,list.length)};
+      im.src=src; imgs[i]=im;
+    });
+    return imgs;
+  }
+
+  // --- start: ładujemy tylko hero, resztę w tle ---
+  var bootBar=document.querySelector('#boot .bar i'), boot=document.getElementById('boot');
+  store.h=load(listFor('h'),function(d,t){
+    bootBar.style.width=Math.round(d/t*100)+'%';
+    if(d===t){
+      boot.classList.add('done');
+      setTimeout(function(){boot.remove()},800);
+      ['p','b','f'].forEach(function(k){store[k]=load(listFor(k))});
+    }
+  });
+
+  // --- rysowanie sekwencji na canvas ---
+  var canvases=[].slice.call(document.querySelectorAll('canvas[data-seq]'));
+  canvases.forEach(function(cv){
+    cv.ctx=cv.getContext('2d',{alpha:false});
+    cv.key=cv.dataset.seq; cv.cur=-1;
+  });
+  function fit(cv){
+    var r=cv.getBoundingClientRect(), d=Math.min(window.devicePixelRatio||1,2);
+    cv.width=Math.round(r.width*d); cv.height=Math.round(r.height*d);
+    cv.cur=-1;
+  }
+  function cover(cv,im){
+    var cw=cv.width,ch=cv.height,iw=im.naturalWidth,ih=im.naturalHeight;
+    if(!iw||!ih)return;
+    var s=Math.max(cw/iw,ch/ih), w=iw*s, h=ih*s;
+    cv.ctx.drawImage(im,(cw-w)/2,(ch-h)/2,w,h);
+  }
+  function draw(cv,p){
+    var arr=store[cv.key]; if(!arr||!arr.length)return;
+    var i=Math.min(arr.length-1,Math.max(0,Math.round(p*(arr.length-1))));
+    if(i===cv.cur)return;
+    var im=arr[i];
+    if(im&&im.complete&&im.naturalWidth){cv.cur=i;cover(cv,im)}
+  }
+
+  // --- postęp sceny ---
+  function progressOf(sec){
+    var r=sec.getBoundingClientRect(), vh=window.innerHeight;
+    var total=r.height-vh;
+    if(total<=0)return 0;
+    return Math.min(1,Math.max(0,(-r.top)/total));
+  }
+
+  var scenes=[].slice.call(document.querySelectorAll('.scene'));
+  var caps=[].slice.call(document.querySelectorAll('.cap'));
+  var parts=[].slice.call(document.querySelectorAll('.part'));
+  var stills=[].slice.call(document.querySelectorAll('[data-par]'));
+  var heroTxt=document.getElementById('heroTxt');
+  var hint=document.querySelector('.scrollhint');
+  var hdr=document.getElementById('hdr');
+  var partsScene=document.getElementById('s-parts');
+  var ticking=false;
+
+  function frame(){
+    ticking=false;
+    var vh=window.innerHeight;
+
+    scenes.forEach(function(sec){
+      var r=sec.getBoundingClientRect();
+      if(r.bottom<-200||r.top>vh+200)return;      // poza kadrem — nie liczymy
+      var p=progressOf(sec);
+
+      var cv=sec.querySelector('canvas[data-seq]');
+      if(cv){ if(!cv.width)fit(cv); draw(cv,p); }
+
+      var still=sec.querySelector('[data-par]');
+      if(still){ still.style.transform='scale(1.05) translateY('+((p-0.5)*-26)+'px)'; }
+
+      var cap=sec.querySelector('.cap');
+      if(cap){ cap.classList.toggle('in', p>0.14 && p<0.94); }
+    });
+
+    // hero: tekst znika przy zjeżdżaniu
+    var hr=document.getElementById('s-hero').getBoundingClientRect();
+    var hp=progressOf(document.getElementById('s-hero'));
+    if(heroTxt){
+      var o=Math.max(0,1-hp*2.4);
+      heroTxt.style.opacity=o;
+      heroTxt.style.transform='translateY('+(hp*-40)+'px)';
+      if(hint)hint.style.opacity=Math.max(0,1-hp*6);
+    }
+    hdr.classList.toggle('stuck', hr.bottom < vh*0.85);
+
+    // podświetlanie części
+    if(partsScene){
+      var pp=progressOf(partsScene);
+      parts.forEach(function(el){ el.classList.toggle('on', pp>=parseFloat(el.dataset.at)); });
+    }
+  }
+  function onScroll(){ if(!ticking){ticking=true;requestAnimationFrame(frame)} }
+  window.__frame=frame;   // furtka do weryfikacji w automatyce (rAF zamarza w karcie bez fokusu)
+
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',function(){canvases.forEach(fit);onScroll()});
+  window.addEventListener('load',function(){canvases.forEach(fit);onScroll()});
+  setTimeout(function(){canvases.forEach(fit);onScroll()},60);
+  setInterval(onScroll,400);   // dociąga klatki, które doładowały się po przewinięciu
+
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var t=document.querySelector(a.getAttribute('href'));
+      if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}
+    });
+  });
+})();
+</script>
+</body>
+</html>
