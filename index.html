@@ -5,189 +5,239 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Szymański Gaz Serwis — serwis kotłów gazowych, Gniezno</title>
 <meta name="description" content="Przeglądy, naprawy i montaż kotłów gazowych. Gniezno, Witkowo, Trzemeszno, Czerniejewo, Kłecko. Kamil Szymański, 4,8/5 z 45 opinii Google.">
+<meta name="theme-color" content="#08090b">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#08090b;
-  --bg2:#0e1013;
-  --ink:#f2f0ee;
-  --dim:#9aa0a8;
-  --dim2:#6d747c;
-  --line:#1c2027;
-  --flame:#ff8b3d;
-  --flame-soft:#ffb27a;
-  --cool:#5aa9ff;
+  --bg:#08090b; --bg2:#0b0d10;
+  --ink:#f4f2f0; --dim:#9ba1a9; --dim2:#6b727a;
+  --line:#1b1f25; --line2:#252a31;
+  --flame:#ff8b3d; --flame2:#ffab6e;
+  --ease:cubic-bezier(.22,.68,.28,1);
   color-scheme:dark;
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:auto}
-body{
-  background:var(--bg);color:var(--ink);
-  font:16px/1.65 Inter,-apple-system,system-ui,sans-serif;
-  -webkit-font-smoothing:antialiased;
-  overflow-x:hidden;
-}
-h1,h2,h3,.num{font-family:Sora,Inter,sans-serif;letter-spacing:-0.025em;line-height:1.05}
+body{background:var(--bg);color:var(--ink);
+  font:16px/1.65 Inter,-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,.mono{font-family:Sora,Inter,sans-serif;letter-spacing:-.025em;line-height:1.05}
+::selection{background:var(--flame);color:#180d04}
 
-/* ---------- ładowanie ---------- */
-#boot{position:fixed;inset:0;z-index:200;background:var(--bg);display:flex;
-  align-items:center;justify-content:center;flex-direction:column;gap:22px;
-  transition:opacity .7s ease}
+/* ---------------- ekran startowy ---------------- */
+#boot{position:fixed;inset:0;z-index:300;background:var(--bg);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:24px;
+  transition:opacity .9s var(--ease)}
 #boot.done{opacity:0;pointer-events:none}
-#boot .bname{font-family:Sora;font-weight:300;font-size:clamp(18px,3vw,24px);letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}
-#boot .bar{width:min(240px,46vw);height:2px;background:#1a1d22;overflow:hidden;border-radius:2px}
-#boot .bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--flame),var(--flame-soft));transition:width .25s ease}
+#boot .bn{font-family:Sora;font-weight:300;font-size:clamp(17px,2.6vw,22px);
+  letter-spacing:.26em;text-transform:uppercase;color:var(--dim)}
+#boot .bar{width:min(260px,50vw);height:2px;background:#181b20;border-radius:2px;overflow:hidden}
+#boot .bar i{display:block;height:100%;width:0;border-radius:2px;
+  background:linear-gradient(90deg,var(--flame),var(--flame2));transition:width .3s var(--ease)}
+#boot .pct{font-size:11px;letter-spacing:.24em;color:var(--dim2)}
 
-/* ---------- pasek górny ---------- */
-header{position:fixed;top:0;left:0;right:0;z-index:100;
+/* ---------------- pasek górny ---------------- */
+header{position:fixed;top:0;left:0;right:0;z-index:120;
   display:flex;align-items:center;justify-content:space-between;
-  padding:18px clamp(18px,4vw,44px);
-  transition:background .4s ease,backdrop-filter .4s ease,border-color .4s;
-  border-bottom:1px solid transparent}
-header.stuck{background:rgba(8,9,11,.78);backdrop-filter:blur(14px);border-bottom-color:var(--line)}
-.brand{font-family:Sora;font-weight:600;font-size:15px;letter-spacing:.02em}
+  padding:17px clamp(16px,4vw,44px);border-bottom:1px solid transparent;
+  transition:background .5s var(--ease),backdrop-filter .5s var(--ease),border-color .5s var(--ease)}
+header.stuck{background:rgba(8,9,11,.72);backdrop-filter:blur(16px) saturate(1.2);border-bottom-color:var(--line)}
+.brand{font-family:Sora;font-weight:600;font-size:15px;letter-spacing:.01em;white-space:nowrap}
 .brand span{color:var(--flame)}
-.callbtn{display:inline-flex;align-items:center;gap:9px;
-  padding:11px 20px;border-radius:100px;text-decoration:none;
-  background:var(--flame);color:#1a0d04;font-weight:600;font-size:14.5px;
-  transition:transform .25s ease,box-shadow .25s ease;
-  box-shadow:0 6px 26px -10px rgba(255,139,61,.9)}
-.callbtn:hover{transform:translateY(-2px);box-shadow:0 12px 34px -10px rgba(255,139,61,1)}
+.callbtn{display:inline-flex;align-items:center;gap:9px;padding:11px 21px;border-radius:100px;
+  text-decoration:none;background:var(--flame);color:#180d04;font-weight:600;font-size:14.5px;white-space:nowrap;
+  transition:transform .3s var(--ease),box-shadow .3s var(--ease),background .3s;
+  box-shadow:0 8px 30px -12px rgba(255,139,61,.95)}
+.callbtn:hover{transform:translateY(-2px);background:var(--flame2);box-shadow:0 14px 38px -12px rgba(255,139,61,1)}
 .callbtn svg{width:15px;height:15px;fill:currentColor}
 
-/* ---------- sceny ---------- */
-.scene{position:relative}
-.sticky{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
-.sticky canvas,.sticky .still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+/* ---------------- FILM: jedno płótno, jedna oś czasu ---------------- */
+#film{position:relative}
+.stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:#060709}
+#cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+.grain{position:absolute;inset:-50%;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/></filter><rect width='180' height='180' filter='url(%23n)'/></svg>")}
 .vig{position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(120% 80% at 50% 45%,transparent 30%,rgba(4,5,7,.55) 78%,rgba(4,5,7,.9) 100%)}
-.grad-b{position:absolute;left:0;right:0;bottom:0;height:70%;pointer-events:none;
-  background:linear-gradient(transparent,rgba(5,6,8,.55) 42%,rgba(5,6,8,.93) 82%,rgba(5,6,8,.97))}
-.grad-t{position:absolute;left:0;right:0;top:0;height:30%;pointer-events:none;
-  background:linear-gradient(rgba(6,7,9,.75),transparent)}
-/* przyciemnienie od strony tekstu — bez tego biały napis ginie na jasnej obudowie */
-.shade-l{position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(96deg,rgba(5,6,8,.9) 0%,rgba(5,6,8,.82) 26%,rgba(5,6,8,.6) 42%,rgba(5,6,8,.26) 56%,rgba(5,6,8,.05) 68%,transparent 78%)}
-.shade-b{position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(180deg,transparent 30%,rgba(5,6,8,.5) 58%,rgba(5,6,8,.93) 88%)}
+  background:radial-gradient(125% 78% at 50% 42%,transparent 32%,rgba(4,5,7,.5) 76%,rgba(4,5,7,.92) 100%)}
+/* dolna krawędź kadru rozpływa się w tło strony — bez tego film „urywa się" linią */
+.tail{position:absolute;left:0;right:0;bottom:0;height:16%;pointer-events:none;
+  background:linear-gradient(transparent,var(--bg))}
+.shade{position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(96deg,rgba(5,6,8,.9) 0%,rgba(5,6,8,.8) 26%,rgba(5,6,8,.55) 43%,rgba(5,6,8,.2) 58%,transparent 76%)}
 
-.cap{position:absolute;z-index:5;left:clamp(20px,6vw,90px);right:clamp(20px,6vw,90px);
-  bottom:clamp(70px,12vh,130px);max-width:660px;
-  opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.3,1)}
-.cap.in{opacity:1;transform:none}
-.cap .kicker{font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--flame);margin-bottom:14px;font-weight:600}
-.cap h2{font-size:clamp(28px,5.2vw,60px);font-weight:600;margin-bottom:14px}
-.cap p{font-size:clamp(15px,1.6vw,19px);color:#c3c8cf;max-width:52ch}
+/* teksty rozdziałów — jedna warstwa, sterowana z JS */
+.chapters{position:absolute;inset:0;z-index:6;pointer-events:none}
+.ch{position:absolute;left:clamp(20px,6.5vw,104px);right:clamp(20px,6.5vw,104px);
+  bottom:clamp(78px,14vh,148px);max-width:680px;will-change:opacity,transform}
+.ch .kick{display:inline-block;font-size:11px;letter-spacing:.3em;text-transform:uppercase;
+  color:var(--flame);font-weight:600;margin-bottom:15px;
+  text-shadow:0 2px 20px rgba(0,0,0,.9)}
+.ch h2{font-size:clamp(29px,5vw,58px);font-weight:600;margin-bottom:15px;
+  text-shadow:0 4px 34px rgba(0,0,0,.85)}
+.ch p{font-size:clamp(15px,1.6vw,19px);color:#c9ced5;max-width:50ch;
+  text-shadow:0 2px 22px rgba(0,0,0,.9)}
 
-/* ---------- hero ---------- */
-.hero-txt{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;
-  justify-content:center;padding:0 clamp(22px,7vw,110px)}
-.hero-txt .eyebrow{font-size:11.5px;letter-spacing:.3em;text-transform:uppercase;color:var(--dim);margin-bottom:20px}
-.hero-txt h1{font-size:clamp(36px,6.4vw,86px);font-weight:600;max-width:11ch;
-  text-shadow:0 4px 40px rgba(0,0,0,.85),0 1px 6px rgba(0,0,0,.6)}
-.hero-txt .eyebrow,.hero-txt .lead{text-shadow:0 2px 18px rgba(0,0,0,.9)}
-.cap h2,.cap p,.cap .kicker{text-shadow:0 3px 26px rgba(0,0,0,.8)}
-.hero-txt h1 em{font-style:normal;color:var(--flame)}
-.hero-txt .lead{margin-top:22px;font-size:clamp(15.5px,1.9vw,21px);color:#c7ccd3;max-width:40ch}
-.hero-txt .row{margin-top:36px;display:flex;flex-wrap:wrap;gap:14px;align-items:center}
-.ghost{display:inline-flex;align-items:center;gap:9px;padding:11px 20px;border-radius:100px;
-  border:1px solid #2b3138;color:var(--ink);text-decoration:none;font-size:14.5px;
-  transition:border-color .25s,background .25s}
-.ghost:hover{border-color:#49515b;background:rgba(255,255,255,.04)}
-.hero-fade{opacity:1;transition:opacity .4s linear}
-.scrollhint{position:absolute;left:50%;bottom:34px;transform:translateX(-50%);z-index:6;
-  font-size:11px;letter-spacing:.26em;text-transform:uppercase;color:var(--dim2);
-  display:flex;flex-direction:column;align-items:center;gap:10px}
-.scrollhint i{display:block;width:1px;height:38px;background:linear-gradient(var(--dim2),transparent);animation:drop 2.1s ease-in-out infinite}
-@keyframes drop{0%{transform:scaleY(.2);transform-origin:top;opacity:0}45%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1);transform-origin:bottom;opacity:0}}
+/* rozdział 0 = hero, wyśrodkowany */
+.ch.hero{bottom:auto;top:50%;transform:translateY(-50%);max-width:900px}
+.ch.hero .eyebrow{font-size:11px;letter-spacing:.32em;text-transform:uppercase;color:var(--dim);margin-bottom:22px;
+  text-shadow:0 2px 18px rgba(0,0,0,.9)}
+.ch.hero h1{font-size:clamp(36px,6.4vw,88px);font-weight:600;max-width:11ch;
+  text-shadow:0 5px 44px rgba(0,0,0,.88),0 1px 6px rgba(0,0,0,.7)}
+.ch.hero h1 em{font-style:normal;color:var(--flame)}
+.ch.hero .lead{margin-top:22px;font-size:clamp(15.5px,1.8vw,20px);color:#cbd0d7;max-width:38ch;
+  text-shadow:0 2px 20px rgba(0,0,0,.92)}
+.ch.hero .row{margin-top:34px;display:flex;flex-wrap:wrap;gap:13px;align-items:center;pointer-events:auto}
+.ghost{display:inline-flex;align-items:center;gap:9px;padding:11px 21px;border-radius:100px;
+  border:1px solid #2c333b;color:var(--ink);text-decoration:none;font-size:14.5px;
+  background:rgba(10,12,15,.4);backdrop-filter:blur(6px);
+  transition:border-color .3s var(--ease),background .3s var(--ease),transform .3s var(--ease)}
+.ghost:hover{border-color:#4a525c;background:rgba(255,255,255,.07);transform:translateY(-2px)}
 
-/* ---------- bloki tekstowe ---------- */
-.say{padding:clamp(110px,20vh,190px) clamp(22px,7vw,110px);max-width:1100px}
-.say p{font-family:Sora;font-weight:300;font-size:clamp(26px,4.4vw,54px);line-height:1.18;letter-spacing:-.02em}
-.say p b{font-weight:600;color:var(--flame)}
-.say .small{font-family:Inter;font-weight:400;font-size:clamp(15px,1.7vw,19px);color:var(--dim);margin-top:26px;max-width:56ch;line-height:1.65}
+/* lista części — rozdział „pod pokrywą" */
+.parts{position:absolute;z-index:7;right:clamp(20px,6.5vw,104px);top:50%;transform:translateY(-50%);
+  width:min(320px,74vw);pointer-events:none}
+.part{padding:14px 0 14px 18px;border-left:2px solid #23272e;will-change:opacity}
+.part b{display:block;font-family:Sora;font-weight:600;font-size:16.5px;margin-bottom:2px;
+  text-shadow:0 2px 16px rgba(0,0,0,.9)}
+.part span{font-size:13.5px;color:var(--dim);text-shadow:0 2px 16px rgba(0,0,0,.9)}
 
-/* ---------- części pod obudową ---------- */
-.parts{position:absolute;z-index:6;right:clamp(20px,6vw,90px);top:50%;transform:translateY(-50%);
-  display:flex;flex-direction:column;gap:2px;width:min(310px,74vw)}
-.part{padding:15px 18px;border-left:2px solid #23272e;
-  opacity:.28;transition:opacity .5s ease,border-color .5s ease,transform .5s ease}
-.part.on{opacity:1;border-left-color:var(--flame);transform:translateX(4px)}
-.part b{display:block;font-family:Sora;font-weight:600;font-size:16px;margin-bottom:3px}
-.part span{font-size:13.5px;color:var(--dim)}
+/* nawigacja rozdziałów + postęp */
+.rail{position:absolute;z-index:8;left:clamp(16px,3vw,34px);top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:13px;pointer-events:auto}
+.rail button{all:unset;cursor:pointer;display:flex;align-items:center;gap:11px;opacity:.35;
+  transition:opacity .45s var(--ease)}
+.rail button:hover,.rail button.on{opacity:1}
+.rail i{display:block;width:22px;height:2px;background:var(--dim);border-radius:2px;
+  transition:width .45s var(--ease),background .45s var(--ease)}
+.rail button.on i{width:38px;background:var(--flame)}
+.rail em{font-style:normal;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim);
+  opacity:0;transform:translateX(-6px);transition:opacity .45s var(--ease),transform .45s var(--ease);white-space:nowrap}
+.rail button:hover em,.rail button.on em{opacity:1;transform:none}
+.rail button.on em{color:var(--ink)}
 
-/* ---------- sekcje treści ---------- */
-section.block{padding:clamp(90px,14vh,150px) clamp(22px,7vw,110px);border-top:1px solid var(--line)}
-.eyeb{font-size:11.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--flame);font-weight:600;margin-bottom:16px}
-.h2{font-size:clamp(30px,4.6vw,52px);font-weight:600;margin-bottom:18px;max-width:20ch}
-.sub{color:var(--dim);font-size:clamp(15px,1.6vw,18px);max-width:58ch}
+.pbar{position:absolute;left:0;bottom:0;height:2px;width:100%;z-index:9;background:rgba(255,255,255,.06)}
+.pbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--flame),var(--flame2))}
 
-.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:52px}
-@media(max-width:1080px){.cards{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:640px){.cards{grid-template-columns:1fr}}
-.card{background:linear-gradient(180deg,#101317,#0c0e11);border:1px solid var(--line);
-  border-radius:14px;padding:26px 24px 28px;transition:border-color .35s ease,transform .35s ease}
-.card:hover{border-color:#2e343d;transform:translateY(-3px)}
-.card .ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;
-  background:rgba(255,139,61,.1);border:1px solid rgba(255,139,61,.22);margin-bottom:18px}
-.card .ic svg{width:18px;height:18px;stroke:var(--flame);fill:none;stroke-width:1.7}
+.hint{position:absolute;left:50%;bottom:30px;transform:translateX(-50%);z-index:7;
+  font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--dim2);
+  display:flex;flex-direction:column;align-items:center;gap:10px;pointer-events:none}
+.hint i{display:block;width:1px;height:34px;background:linear-gradient(var(--dim2),transparent);
+  animation:drop 2.2s var(--ease) infinite}
+@keyframes drop{0%{transform:scaleY(.15);transform-origin:top;opacity:0}
+  45%{transform:scaleY(1);opacity:1}100%{transform:scaleY(1);transform-origin:bottom;opacity:0}}
+
+/* ---------------- sekcje po filmie ---------------- */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.reveal.on{opacity:1;transform:none}
+
+.trust{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);
+  border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.trust div{background:var(--bg);padding:30px clamp(16px,3vw,34px);text-align:center}
+.trust b{display:block;font-family:Sora;font-weight:600;font-size:clamp(20px,2.6vw,30px);margin-bottom:5px}
+.trust b.acc{color:var(--flame)}
+.trust span{font-size:12.5px;color:var(--dim2);letter-spacing:.04em}
+
+section.block{padding:clamp(88px,13vh,146px) clamp(20px,6.5vw,104px);border-top:1px solid var(--line)}
+.eyeb{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--flame);font-weight:600;margin-bottom:16px}
+.h2{font-size:clamp(29px,4.4vw,50px);font-weight:600;margin-bottom:18px;max-width:19ch}
+.sub{color:var(--dim);font-size:clamp(15px,1.6vw,18px);max-width:56ch}
+
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:50px}
+.card{position:relative;background:linear-gradient(168deg,#101317,#0b0d10);border:1px solid var(--line);
+  border-radius:15px;padding:27px 25px 29px;overflow:hidden;
+  transition:border-color .45s var(--ease),transform .45s var(--ease)}
+.card::after{content:"";position:absolute;inset:0;border-radius:15px;pointer-events:none;opacity:0;
+  background:radial-gradient(420px 200px at var(--mx,50%) var(--my,0%),rgba(255,139,61,.11),transparent 70%);
+  transition:opacity .45s var(--ease)}
+.card:hover{border-color:#2f353d;transform:translateY(-4px)}
+.card:hover::after{opacity:1}
+.card .ic{width:39px;height:39px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,139,61,.1);border:1px solid rgba(255,139,61,.2);margin-bottom:19px}
+.card .ic svg{width:18px;height:18px;stroke:var(--flame);fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 .card h3{font-size:18.5px;font-weight:600;margin-bottom:9px;line-height:1.28}
 .card p{font-size:14.5px;color:var(--dim);line-height:1.6}
 
-/* ---------- opinie ---------- */
-.rate{display:flex;align-items:baseline;gap:16px;margin-bottom:8px;flex-wrap:wrap}
-.rate .num{font-size:clamp(52px,9vw,96px);font-weight:700;letter-spacing:-.04em}
-.stars{color:var(--flame);font-size:19px;letter-spacing:3px}
-.rate .cnt{color:var(--dim);font-size:15px}
-.quotes{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:14px;margin-top:44px}
-.q{background:#0d0f13;border:1px solid var(--line);border-radius:14px;padding:26px 24px}
-.q p{font-size:15.5px;line-height:1.6;color:#d5d9de}
-.q cite{display:block;margin-top:16px;font-style:normal;font-size:13.5px;color:var(--dim2)}
-.q .s{color:var(--flame);font-size:13px;letter-spacing:2px;margin-bottom:14px}
+/* proces — 4 kroki */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:54px;position:relative}
+.steps::before{content:"";position:absolute;left:0;right:0;top:19px;height:1px;background:var(--line2)}
+.step{position:relative;padding:0 22px 0 0}
+.step .no{position:relative;width:38px;height:38px;border-radius:50%;background:var(--bg);
+  border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;
+  font-family:Sora;font-weight:600;font-size:14px;color:var(--flame);margin-bottom:20px;z-index:2}
+.step h3{font-size:17.5px;font-weight:600;margin-bottom:8px}
+.step p{font-size:14.5px;color:var(--dim);line-height:1.6;max-width:26ch}
 
-/* ---------- kontakt ---------- */
-#kontakt{background:linear-gradient(180deg,#0a0c0f,#07080a)}
-.ctagrid{display:grid;grid-template-columns:1.15fr .85fr;gap:60px;align-items:start;margin-top:46px}
-.bigphone{font-family:Sora;font-weight:700;font-size:clamp(32px,6.4vw,68px);letter-spacing:-.035em;
-  color:var(--ink);text-decoration:none;display:inline-block;transition:color .3s}
+/* opinie */
+.rate{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.rate .big{font-family:Sora;font-size:clamp(48px,8vw,88px);font-weight:700;letter-spacing:-.04em;line-height:1}
+.stars{color:var(--flame);font-size:18px;letter-spacing:3px}
+.rate .cnt{color:var(--dim);font-size:14.5px;margin-top:4px}
+.quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-top:46px}
+.q{background:#0c0e12;border:1px solid var(--line);border-radius:15px;padding:27px 25px;
+  transition:border-color .45s var(--ease),transform .45s var(--ease)}
+.q:hover{border-color:#2f353d;transform:translateY(-3px)}
+.q .s{color:var(--flame);font-size:12.5px;letter-spacing:2px;margin-bottom:15px}
+.q p{font-size:15.5px;line-height:1.62;color:#d6dae0}
+.q cite{display:block;margin-top:17px;font-style:normal;font-size:13.5px;color:var(--dim2)}
+
+/* kontakt */
+#kontakt{background:linear-gradient(180deg,#0a0c0f,#070809)}
+.ctagrid{display:grid;grid-template-columns:1.1fr .9fr;gap:58px;align-items:start;margin-top:46px}
+.bigphone{font-family:Sora;font-weight:700;font-size:clamp(30px,6vw,64px);letter-spacing:-.035em;
+  text-decoration:none;color:var(--ink);display:inline-block;transition:color .35s var(--ease)}
 .bigphone:hover{color:var(--flame)}
-.meta{display:flex;flex-direction:column;gap:22px}
-.meta div b{display:block;font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim2);margin-bottom:7px;font-weight:600}
-.meta div span,.meta div a{font-size:16px;color:#d8dce1;text-decoration:none}
-.meta div a:hover{color:var(--flame)}
-.area{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.area i{font-style:normal;font-size:13px;padding:6px 13px;border:1px solid var(--line);border-radius:100px;color:var(--dim)}
+.area{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.area i{font-style:normal;font-size:13px;padding:7px 14px;border:1px solid var(--line2);
+  border-radius:100px;color:var(--dim);transition:border-color .35s,color .35s}
+.area i:hover{border-color:var(--flame);color:var(--flame2)}
+.meta{display:flex;flex-direction:column;gap:24px}
+.meta b{display:block;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim2);margin-bottom:8px;font-weight:600}
+.meta span,.meta a{font-size:16px;color:#d9dde2;text-decoration:none}
+.meta a:hover{color:var(--flame)}
 
-footer{padding:34px clamp(22px,7vw,110px);border-top:1px solid var(--line);
+footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
   display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--dim2);font-size:13px}
 
-@media(max-width:700px){
-  /* na wąskim ekranie gradient poziomy nie zdąży przyciemnić — kładziemy pionowy */
-  .shade-l{background:linear-gradient(180deg,rgba(5,6,8,.82) 0%,rgba(5,6,8,.5) 30%,rgba(5,6,8,.62) 58%,rgba(5,6,8,.93) 100%)}
-  header{padding:13px 16px}
-  .brand{font-size:13.5px}
-  .callbtn{padding:9px 15px;font-size:13.5px;gap:7px}
-  .hero-txt{padding:0 22px}
-  .hero-txt h1{max-width:none}
-  .scrollhint{display:none}
+/* ---------------- responsywność ---------------- */
+@media(min-width:1001px){
+  /* miejsce na szynę rozdziałów po lewej */
+  .ch{left:clamp(92px,9.5vw,158px)}
 }
-@media(max-width:860px){
-  .ctagrid{grid-template-columns:1fr;gap:44px}
-  .parts{right:auto;left:clamp(20px,6vw,90px);top:auto;bottom:clamp(80px,14vh,140px);transform:none;width:min(300px,80vw)}
-  .cap{bottom:clamp(40px,8vh,90px)}
-  .part{padding:11px 15px}
+@media(max-width:1000px){
+  .cards,.quotes{grid-template-columns:repeat(2,1fr)}
+  .steps{grid-template-columns:repeat(2,1fr);gap:34px 0}
+  .steps::before{display:none}
+  .ctagrid{grid-template-columns:1fr;gap:42px}
+  .trust{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:700px){
+  .shade{background:linear-gradient(180deg,rgba(5,6,8,.8) 0%,rgba(5,6,8,.42) 32%,rgba(5,6,8,.6) 62%,rgba(5,6,8,.94) 100%)}
+  header{padding:12px 15px}
+  .brand{font-size:13px}
+  .callbtn{padding:9px 15px;font-size:13.5px;gap:7px}
+  .cards,.quotes{grid-template-columns:1fr}
+  .rail{display:none}
+  .hint{display:none}
+  .ch{bottom:clamp(46px,9vh,96px)}
+  .ch.hero h1{max-width:none}
+  .parts{right:auto;left:clamp(20px,6.5vw,104px);top:auto;bottom:clamp(52px,10vh,110px);
+    transform:none;width:min(300px,82vw)}
+  .parts.withtext{bottom:auto;top:22%}
+  .part{padding:10px 0 10px 14px}
   .part b{font-size:15px}
 }
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media(prefers-reduced-motion:reduce){
+  .grain{display:none}
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+}
 </style>
 </head>
 <body>
 
 <div id="boot">
-  <div class="bname">Szymański Gaz Serwis</div>
-  <div class="bar"><i></i></div>
+  <div class="bn">Szymański Gaz Serwis</div>
+  <div class="bar"><i id="bfill"></i></div>
+  <div class="pct" id="bpct">0%</div>
 </div>
 
 <header id="hdr">
@@ -198,184 +248,163 @@ footer{padding:34px clamp(22px,7vw,110px);border-top:1px solid var(--line);
   </a>
 </header>
 
-<!-- ============ HERO ============ -->
-<section class="scene" id="s-hero" style="height:320vh">
-  <div class="sticky">
-    <canvas data-seq="h" data-n="50" data-pad="3"></canvas>
-    <div class="grad-t"></div><div class="vig"></div><div class="shade-l"></div>
-    <div class="hero-txt hero-fade" id="heroTxt">
-      <div class="eyebrow">Gniezno i okolice · od ręki</div>
-      <h1>Kocioł ma <em>działać</em>. Nie zastanawiać Cię.</h1>
-      <p class="lead">Przeglądy, naprawy i montaż kotłów gazowych. Ty mówisz, co się dzieje — ja mówię, ile i kiedy.</p>
-      <div class="row">
-        <a class="callbtn" href="tel:+48782492609">
-          <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.4 21 3 13.6 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 1.7z"/></svg>
-          Zadzwoń: 782 492 609
-        </a>
-        <a class="ghost" href="#uslugi">Co robię</a>
+<!-- ================= FILM ================= -->
+<div id="film">
+  <div class="stage">
+    <canvas id="cv"></canvas>
+    <div class="vig"></div>
+    <div class="shade" id="shade"></div>
+    <div class="tail"></div>
+    <div class="grain"></div>
+
+    <div class="chapters" id="chapters">
+
+      <div class="ch hero" data-i="0">
+        <div class="eyebrow">Gniezno i okolice · Kamil Szymański</div>
+        <h1>Kocioł ma <em>działać</em>. Nie zastanawiać Cię.</h1>
+        <p class="lead">Przeglądy, naprawy i montaż kotłów gazowych. Ty mówisz, co się dzieje — ja mówię, ile i kiedy.</p>
+        <div class="row">
+          <a class="callbtn" href="tel:+48782492609">
+            <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.4 21 3 13.6 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 1.7z"/></svg>
+            Zadzwoń: 782 492 609
+          </a>
+          <a class="ghost" href="#uslugi">Zobacz, co robię</a>
+        </div>
       </div>
-    </div>
-    <div class="scrollhint hero-fade">przewiń<i></i></div>
-  </div>
-</section>
 
-<div class="say">
-  <p>Wisi u Ciebie na ścianie od lat.<br><b>Wiesz, co jest w środku?</b></p>
-  <p class="small">Przewiń dalej — pokażę Ci, co dokładnie sprawdzam podczas przeglądu i dlaczego to ma znaczenie dla Twojego rachunku za gaz.</p>
+      <div class="ch" data-i="1">
+        <div class="kick">Punkt wyjścia</div>
+        <h2>Z zewnątrz zawsze wygląda tak samo</h2>
+        <p>Biała obudowa i cicha praca nie mówią nic o tym, w jakim stanie jest urządzenie w środku.</p>
+      </div>
+
+      <div class="ch" data-i="2">
+        <div class="kick">Pod pokrywą</div>
+        <h2>Pracują tu cztery rzeczy</h2>
+      </div>
+
+      <div class="ch" data-i="3">
+        <div class="kick">Serce urządzenia</div>
+        <h2>Płomień musi być równy i niebieski</h2>
+        <p>Żółty, kopcący ogień znaczy, że mieszanka jest źle ustawiona — palisz więcej gazu, a ciepła masz mniej.</p>
+      </div>
+
+      <div class="ch" data-i="4">
+        <div class="kick">Wymiennik</div>
+        <h2>Czysta miedź oddaje ciepło wodzie</h2>
+        <p>Każdy milimetr osadu na tych żeberkach to ciepło, które ucieka kominem zamiast trafić do grzejników.</p>
+      </div>
+
+      <div class="ch" data-i="5">
+        <div class="kick">Instalacja</div>
+        <h2>Ciśnienie i obieg pod kontrolą</h2>
+        <p>Pompa, manometr, szczelność połączeń. Spadające ciśnienie to najczęstszy powód zimnych grzejników na piętrze.</p>
+      </div>
+
+      <div class="ch" data-i="6">
+        <div class="kick">Rok bez przeglądu</div>
+        <h2>To ten sam wymiennik</h2>
+        <p>Sadza, korozja i osad. Kocioł jeszcze grzeje, ale zużywa więcej gazu, częściej się blokuje, a naprawa kosztuje wielokrotnie więcej.</p>
+      </div>
+
+      <div class="ch" data-i="7">
+        <div class="kick">Po serwisie</div>
+        <h2>Zielona dioda i spokój na cały sezon</h2>
+        <p>Wyczyszczony wymiennik, ustawiony palnik, sprawdzona szczelność i ciśnienie. Kocioł pracuje tak, jak powinien.</p>
+      </div>
+
+    </div>
+
+    <div class="parts" id="parts">
+      <div class="part"><b>Palnik</b><span>Tu powstaje ciepło</span></div>
+      <div class="part"><b>Wymiennik</b><span>Oddaje je wodzie</span></div>
+      <div class="part"><b>Pompa</b><span>Rozprowadza po grzejnikach</span></div>
+      <div class="part"><b>Sterownik</b><span>Pilnuje parametrów</span></div>
+    </div>
+
+    <nav class="rail" id="rail"></nav>
+    <div class="hint" id="hint">przewiń<i></i></div>
+    <div class="pbar"><i id="pfill"></i></div>
+  </div>
 </div>
 
-<!-- ============ 1. KOCIOŁ ZAMKNIĘTY ============ -->
-<section class="scene" style="height:190vh">
-  <div class="sticky">
-    <img class="still" data-par src="img/1-zamkniety.jpg" alt="Kocioł gazowy zawieszony na ścianie">
-    <div class="vig"></div><div class="grad-b"></div>
-    <div class="cap">
-      <div class="kicker">Punkt wyjścia</div>
-      <h2>Z zewnątrz zawsze wygląda tak samo</h2>
-      <p>Biała obudowa i cicha praca nie mówią nic o tym, w jakim stanie jest urządzenie w środku. Dlatego przegląd to nie formalność.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 2. OBUDOWA ZDJĘTA ============ -->
-<section class="scene" id="s-parts" style="height:250vh">
-  <div class="sticky">
-    <img class="still" data-par src="img/2-obudowa.jpg" alt="Kocioł ze zdjętą obudową">
-    <div class="vig"></div><div class="grad-b"></div>
-    <div class="cap">
-      <div class="kicker">Pod pokrywą</div>
-      <h2>Pracują tu cztery rzeczy</h2>
-    </div>
-    <div class="parts">
-      <div class="part" data-at="0.10"><b>Palnik</b><span>Tu powstaje ciepło</span></div>
-      <div class="part" data-at="0.35"><b>Wymiennik</b><span>Oddaje je wodzie</span></div>
-      <div class="part" data-at="0.60"><b>Pompa</b><span>Rozprowadza po grzejnikach</span></div>
-      <div class="part" data-at="0.82"><b>Sterownik</b><span>Pilnuje parametrów</span></div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 3. PALNIK (animacja) ============ -->
-<section class="scene" style="height:300vh">
-  <div class="sticky">
-    <canvas data-seq="p" data-n="50" data-pad="3"></canvas>
-    <div class="vig"></div><div class="grad-b"></div>
-    <div class="cap">
-      <div class="kicker">Serce urządzenia</div>
-      <h2>Płomień musi być równy i niebieski</h2>
-      <p>Żółty, kopcący ogień to znak, że mieszanka jest źle ustawiona — palisz więcej gazu, a ciepła masz mniej. Ustawienie palnika to podstawa przeglądu.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 4. WYMIENNIK ============ -->
-<section class="scene" style="height:190vh">
-  <div class="sticky">
-    <img class="still" data-par src="img/4-wymiennik.jpg" alt="Czysty miedziany wymiennik ciepła">
-    <div class="vig"></div><div class="grad-b"></div>
-    <div class="cap">
-      <div class="kicker">Wymiennik</div>
-      <h2>Czysta miedź oddaje ciepło wodzie</h2>
-      <p>Tak wygląda wymiennik po czyszczeniu. Każdy milimetr osadu na tych żeberkach to ciepło, które ucieka kominem zamiast trafić do grzejników.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 5. POMPA ============ -->
-<section class="scene" style="height:190vh">
-  <div class="sticky">
-    <img class="still" data-par src="img/5-pompa.jpg" alt="Pompa obiegowa i manometr instalacji">
-    <div class="vig"></div><div class="grad-b"></div>
-    <div class="cap">
-      <div class="kicker">Instalacja</div>
-      <h2>Ciśnienie i obieg pod kontrolą</h2>
-      <p>Sprawdzam pompę, ciśnienie na manometrze i szczelność połączeń. Spadające ciśnienie to najczęstszy powód zimnych grzejników na piętrze.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============ 6. ZWROT AKCJI ============ -->
-<section class="scene" style="height:300vh">
-  <div class="sticky">
-    <canvas data-seq="b" data-n="34" data-pad="3"></canvas>
-    <div class="vig"></div><div class="grad-b"></div>
-    <div class="cap">
-      <div class="kicker">A tak kończy się rok bez przeglądu</div>
-      <h2>To ten sam wymiennik</h2>
-      <p>Sadza, korozja i osad. Kocioł jeszcze grzeje, ale zużywa więcej gazu, częściej się blokuje, a naprawa kosztuje wielokrotnie więcej niż przegląd.</p>
-    </div>
-  </div>
-</section>
-
-<div class="say">
-  <p>Przegląd raz w roku jest tańszy niż <b>jedna awaria w styczniu.</b></p>
-  <p class="small">I szybszy. Przegląd to jedna wizyta w umówionym terminie. Awaria to zimny dom, oczekiwanie na części i rachunek, którego nikt nie planował.</p>
+<!-- ================= PASEK ZAUFANIA ================= -->
+<div class="trust reveal">
+  <div><b class="acc">4,8</b><span>ocena w Google</span></div>
+  <div><b>45</b><span>opinii klientów</span></div>
+  <div><b>5</b><span>miast w zasięgu</span></div>
+  <div><b>1 dzień</b><span>zwykle na termin</span></div>
 </div>
 
-<!-- ============ 7. FINAŁ ============ -->
-<section class="scene" style="height:280vh">
-  <div class="sticky">
-    <canvas data-seq="f" data-n="50" data-pad="3"></canvas>
-    <div class="vig"></div><div class="grad-b"></div>
-    <div class="cap">
-      <div class="kicker">Po serwisie</div>
-      <h2>Zielona dioda i spokój na cały sezon</h2>
-      <p>Wyczyszczony wymiennik, ustawiony palnik, sprawdzona szczelność i ciśnienie. Zostawiam kocioł w stanie, w jakim powinien pracować.</p>
-    </div>
-  </div>
-</section>
-
-<!-- ============ USŁUGI ============ -->
+<!-- ================= USŁUGI ================= -->
 <section class="block" id="uslugi">
-  <div class="eyeb">Zakres usług</div>
-  <h2 class="h2">Kotły gazowe — od przeglądu po montaż</h2>
-  <p class="sub">Pracuję na kotłach wszystkich popularnych marek. Jeśli nie wiesz, co się dzieje z Twoim — zadzwoń i opisz objawy, zwykle wiem już przez telefon.</p>
-  <div class="cards">
-    <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M20.6 8.4a2 2 0 0 1 0 2.8l-9.4 9.4-4.2-4.2 9.4-9.4a2 2 0 0 1 2.8 0zM7 16.6 4 20l3.4-1"/></svg></div>
+  <div class="reveal">
+    <div class="eyeb">Zakres usług</div>
+    <h2 class="h2">Kotły gazowe — od przeglądu po montaż</h2>
+    <p class="sub">Pracuję na kotłach wszystkich popularnych marek. Nie wiesz, co się dzieje z Twoim? Zadzwoń i opisz objawy — zwykle wiem już przez telefon.</p>
+  </div>
+  <div class="cards" id="cards">
+    <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M20.6 8.4a2 2 0 0 1 0 2.8l-9.4 9.4-4.2-4.2 9.4-9.4a2 2 0 0 1 2.8 0zM7 16.6 4 20l3.4-1"/></svg></div>
       <h3>Przegląd i konserwacja</h3><p>Coroczny serwis: czyszczenie, kontrola szczelności, pomiar spalin i ustawienie parametrów.</p></div>
-    <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></div>
+    <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></div>
       <h3>Naprawa awarii</h3><p>Kocioł zgasł, pokazuje błąd albo nie grzeje wody. Diagnoza i naprawa w umówionym terminie.</p></div>
-    <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12h-6v-7H9v7z"/></svg></div>
+    <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12h-6v-7H9v7z"/></svg></div>
       <h3>Wymiana i montaż</h3><p>Dobór kotła pod metraż i instalację, demontaż starego, montaż i uruchomienie nowego.</p></div>
-    <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+    <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
       <h3>Uruchomienie i ustawienie</h3><p>Pierwsze uruchomienie po montażu, ustawienie krzywej grzewczej i temperatur pod Twój dom.</p></div>
-    <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></div>
+    <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></div>
       <h3>Czyszczenie wymiennika i palnika</h3><p>Usunięcie sadzy i osadu — realny wpływ na zużycie gazu i moc grzewczą kotła.</p></div>
-    <div class="card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3v18M18 3v18M6 8h12M6 16h12"/></svg></div>
+    <div class="card reveal"><div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3v18M18 3v18M6 8h12M6 16h12"/></svg></div>
       <h3>Instalacje C.O. i kotłownie</h3><p>Wykonanie instalacji centralnego ogrzewania i kompletnych kotłowni w domach jednorodzinnych.</p></div>
   </div>
 </section>
 
-<!-- ============ OPINIE ============ -->
+<!-- ================= PROCES ================= -->
 <section class="block">
-  <div class="eyeb">Opinie w Google</div>
-  <div class="rate">
-    <div class="num">4,8</div>
-    <div>
-      <div class="stars">★★★★★</div>
-      <div class="cnt">45 opinii klientów z Gniezna i okolic</div>
-    </div>
+  <div class="reveal">
+    <div class="eyeb">Jak to wygląda</div>
+    <h2 class="h2">Cztery kroki, zero niespodzianek</h2>
+    <p class="sub">Bez wyceny „na miejscu zobaczymy". Cenę i termin znasz, zanim przyjadę.</p>
   </div>
-  <div class="quotes">
-    <div class="q"><div class="s">★★★★★</div><p>„Pełen profesjonalizm i błyskawiczna reakcja. Wszystko rzeczowo wyjaśnione."</p><cite>Beata Sroczyńska</cite></div>
-    <div class="q"><div class="s">★★★★★</div><p>„Fachowa wiedza i sprawna realizacja usługi. Wszystko wykonane terminowo."</p><cite>Tomasz Jezierski</cite></div>
-    <div class="q"><div class="s">★★★★★</div><p>„Godny polecenia. Wszystko w umówionym terminie."</p><cite>Jakub Kania</cite></div>
+  <div class="steps">
+    <div class="step reveal"><div class="no">1</div><h3>Telefon</h3><p>Mówisz, jaki masz kocioł i co robi. Wstępną cenę podaję od razu.</p></div>
+    <div class="step reveal"><div class="no">2</div><h3>Termin</h3><p>Umawiamy konkretną godzinę. Zwykle jestem w stanie przyjechać następnego dnia.</p></div>
+    <div class="step reveal"><div class="no">3</div><h3>Robota</h3><p>Przegląd albo naprawa na miejscu. Pokazuję, co było nie tak i dlaczego.</p></div>
+    <div class="step reveal"><div class="no">4</div><h3>Spokój</h3><p>Kocioł ustawiony, instalacja sprawdzona. Wiesz, kiedy przyjechać na kolejny przegląd.</p></div>
   </div>
 </section>
 
-<!-- ============ KONTAKT ============ -->
+<!-- ================= OPINIE ================= -->
+<section class="block">
+  <div class="reveal">
+    <div class="eyeb">Opinie w Google</div>
+    <div class="rate">
+      <div class="big">4,8</div>
+      <div><div class="stars">★★★★★</div><div class="cnt">45 opinii klientów z Gniezna i okolic</div></div>
+    </div>
+  </div>
+  <div class="quotes">
+    <div class="q reveal"><div class="s">★★★★★</div><p>„Pełen profesjonalizm i błyskawiczna reakcja. Wszystko rzeczowo wyjaśnione."</p><cite>Beata Sroczyńska</cite></div>
+    <div class="q reveal"><div class="s">★★★★★</div><p>„Fachowa wiedza i sprawna realizacja usługi. Wszystko wykonane terminowo."</p><cite>Tomasz Jezierski</cite></div>
+    <div class="q reveal"><div class="s">★★★★★</div><p>„Godny polecenia. Wszystko w umówionym terminie."</p><cite>Jakub Kania</cite></div>
+  </div>
+</section>
+
+<!-- ================= KONTAKT ================= -->
 <section class="block" id="kontakt">
-  <div class="eyeb">Kontakt</div>
-  <h2 class="h2">Opisz, co się dzieje z kotłem</h2>
-  <p class="sub">Najszybciej przez telefon. Powiedz, jaki masz kocioł i co robi — dostaniesz konkretną odpowiedź, ile to kosztuje i kiedy mogę przyjechać.</p>
+  <div class="reveal">
+    <div class="eyeb">Kontakt</div>
+    <h2 class="h2">Opisz, co się dzieje z kotłem</h2>
+    <p class="sub">Najszybciej przez telefon. Powiedz, jaki masz kocioł i co robi — dostaniesz konkretną odpowiedź, ile to kosztuje i kiedy mogę przyjechać.</p>
+  </div>
   <div class="ctagrid">
-    <div>
+    <div class="reveal">
       <a class="bigphone" href="tel:+48782492609">782 492 609</a>
       <div class="area">
         <i>Gniezno</i><i>Witkowo</i><i>Trzemeszno</i><i>Czerniejewo</i><i>Kłecko</i><i>okolice</i>
       </div>
     </div>
-    <div class="meta">
+    <div class="meta reveal">
       <div><b>E-mail</b><a href="mailto:kamilszymanski123@vp.pl">kamilszymanski123@vp.pl</a></div>
       <div><b>Adres</b><span>ul. Swarzędzka 25<br>62-200 Gniezno</span></div>
       <div><b>Serwisant</b><span>Kamil Szymański</span></div>
@@ -390,138 +419,311 @@ footer{padding:34px clamp(22px,7vw,110px);border-top:1px solid var(--line);
 
 <script>
 (function(){
-  var seqs = {
-    h:{pre:'klatki/h',n:50},
-    p:{pre:'klatki/p',n:50},
-    b:{pre:'klatki/b',n:34},
-    f:{pre:'klatki/f',n:50}
+'use strict';
+
+/* ============================================================
+   JEDNA OŚ CZASU — wszystkie ujęcia na jednym płótnie.
+   Sceny nie następują po sobie, tylko PRZENIKAJĄ się (crossfade),
+   dlatego nie widać cięcia między nimi.
+   ============================================================ */
+/* Ujęcia. Uwaga: hero i „kocioł zamknięty" to TO SAMO ujęcie — nie tniemy go na dwoje,
+   tylko puszczamy dłużej i zmieniamy na nim tekst. Cięcie między dwoma kadrami tego
+   samego kotła zawsze wygląda jak błąd, a nie jak montaż. */
+var SEG = [
+  {t:'seq',  key:'h', n:50, w:2.60, rail:'Start'},
+  {t:'img',  src:'img/2-obudowa.jpg',    w:1.60, z:[1.04,1.15], rail:'W środku'},
+  {t:'seq',  key:'p', n:50, w:1.55, rail:'Palnik'},
+  {t:'img',  src:'img/4-wymiennik.jpg',  w:1.10, z:[1.15,1.04], rail:'Wymiennik'},
+  {t:'img',  src:'img/5-pompa.jpg',      w:1.10, z:[1.04,1.14], rail:'Instalacja'},
+  {t:'seq',  key:'b', n:34, w:1.50, rail:'Zaniedbanie'},
+  {t:'seq',  key:'f', n:50, w:1.55, rail:'Po serwisie'}
+];
+/* Teksty żyją na WSPÓLNEJ osi, niezależnie od podziału na ujęcia — dzięki temu jedno
+   ujęcie może nieść dwa napisy, a napis może przetrwać przejście. [od, do] w jednostkach osi. */
+var CAPS = [
+  [0.00, 1.05],   // hero
+  [1.32, 2.30],   // „Z zewnątrz zawsze wygląda tak samo"
+  [2.78, 3.90],   // „Pracują tu cztery rzeczy"
+  [4.38, 5.45],   // palnik
+  [5.92, 6.60],   // wymiennik
+  [7.02, 7.70],   // pompa
+  [8.15, 9.20],   // zaniedbany
+  [9.65, 10.92]   // finał
+];
+var CFADE = 0.24;                // jak długo tekst wchodzi/wychodzi (jednostki osi)
+var FADE = 0.30;                 // długość przejścia między ujęciami
+var TOTAL = SEG.reduce(function(a,s){return a+s.w},0);
+
+var narrow = matchMedia('(max-width:700px)').matches;
+var STEP = narrow ? 2 : 1;       // na telefonie co druga klatka
+var store = {};                  // klatki sekwencji
+var stills = {};                 // obrazy statyczne
+
+function pad(n){return ('000'+n).slice(-3)}
+function seqList(key,n){
+  var out=[];
+  for(var i=1;i<=n;i+=STEP) out.push('klatki/'+key+pad(i)+'.jpg');
+  var last='klatki/'+key+pad(n)+'.jpg';
+  if(out[out.length-1]!==last) out.push(last);
+  return out;
+}
+function loadList(list,onEach){
+  return list.map(function(src){
+    var im=new Image();
+    im.onload=im.onerror=function(){onEach&&onEach()};
+    im.src=src; return im;
+  });
+}
+
+/* ---------- ładowanie: najpierw to, co widać od razu ---------- */
+var boot=document.getElementById('boot'), bfill=document.getElementById('bfill'), bpct=document.getElementById('bpct');
+var firstList=seqList('h',50).concat(['img/2-obudowa.jpg']);
+var done=0, need=firstList.length;
+function tick(){
+  done++;
+  var p=Math.min(1,done/need);
+  bfill.style.width=Math.round(p*100)+'%';
+  bpct.textContent=Math.round(p*100)+'%';
+  if(done>=need) start();
+}
+var firstImgs=loadList(firstList,tick);
+store.h=firstImgs.slice(0,firstImgs.length-1);
+stills['img/2-obudowa.jpg']=firstImgs[firstImgs.length-1];
+
+var started=false;
+function start(){
+  if(started)return; started=true;
+  boot.classList.add('done');
+  setTimeout(function(){boot.remove()},950);
+  // reszta w tle, w kolejności pojawiania się na osi
+  ['img/4-wymiennik.jpg','img/5-pompa.jpg'].forEach(function(s){
+    stills[s]=loadList([s])[0];
+  });
+  store.p=loadList(seqList('p',50));
+  store.b=loadList(seqList('b',34));
+  store.f=loadList(seqList('f',50));
+}
+setTimeout(start,9000);   // gdyby coś nie doszło — i tak wpuszczamy
+
+/* ---------- płótno ---------- */
+var cv=document.getElementById('cv'), ctx=cv.getContext('2d',{alpha:false});
+var CW=0,CH=0,DPR=1;
+function fit(){
+  DPR=Math.min(devicePixelRatio||1,2);
+  var r=cv.getBoundingClientRect();
+  CW=Math.round(r.width*DPR); CH=Math.round(r.height*DPR);
+  cv.width=CW; cv.height=CH;
+}
+var buf=document.createElement('canvas'), bctx=buf.getContext('2d');
+function cover(c,im,scale,offY,alpha){
+  if(!im||!im.complete||!im.naturalWidth)return false;
+  var iw=im.naturalWidth, ih=im.naturalHeight;
+  var s=Math.max(CW/iw,CH/ih)*(scale||1);
+  var w=iw*s, h=ih*s;
+  c.globalAlpha=alpha===undefined?1:alpha;
+  c.drawImage(im,(CW-w)/2,(CH-h)/2+(offY||0)*DPR,w,h);
+  c.globalAlpha=1;
+  return true;
+}
+function easeIO(x){return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2}
+
+/* rysuje pojedynczy segment w jego lokalnym czasie t (0..1) */
+function drawSeg(c,i,t,alpha,extra){
+  var s=SEG[i]; if(!s)return false;
+  t=Math.max(0,Math.min(1,t));
+  extra=extra||0;
+  if(s.t==='seq'){
+    var arr=store[s.key]; if(!arr||!arr.length)return false;
+    var idx=Math.round(t*(arr.length-1));
+    // jeśli dokładna klatka jeszcze się nie doładowała — bierzemy najbliższą gotową
+    var im=arr[idx];
+    if(!im||!im.complete||!im.naturalWidth){
+      for(var d=1;d<arr.length;d++){
+        var a=arr[idx-d], b=arr[idx+d];
+        if(a&&a.complete&&a.naturalWidth){im=a;break}
+        if(b&&b.complete&&b.naturalWidth){im=b;break}
+      }
+    }
+    // delikatny oddech kadru, żeby ujęcia miały wspólny język ruchu
+    return cover(c,im,1.02+0.03*easeIO(t)+extra,0,alpha);
+  }
+  var img=stills[s.src];
+  var z=s.z||[1.1,1.02];
+  var sc=z[0]+(z[1]-z[0])*easeIO(t)+extra;
+  var pan=(t-0.5)*22;
+  return cover(c,img,sc,pan,alpha);
+}
+
+/* ---------- oś czasu: pozycja -> segment ---------- */
+var starts=[],acc=0;
+SEG.forEach(function(s){starts.push(acc);acc+=s.w});
+function segAt(T){
+  for(var i=SEG.length-1;i>=0;i--) if(T>=starts[i]) return i;
+  return 0;
+}
+
+/* ---------- teksty rozdziałów ---------- */
+var chs=[].slice.call(document.querySelectorAll('.ch'));
+var parts=[].slice.call(document.querySelectorAll('.part'));
+var partsBox=document.getElementById('parts');
+var rail=document.getElementById('rail');
+var pfill=document.getElementById('pfill');
+var hint=document.getElementById('hint');
+var hdr=document.getElementById('hdr');
+var shade=document.getElementById('shade');
+var film=document.getElementById('film');
+
+SEG.forEach(function(s,i){
+  var b=document.createElement('button');
+  b.innerHTML='<i></i><em>'+s.rail+'</em>';
+  b.setAttribute('aria-label','Przejdź do: '+s.rail);
+  b.onclick=function(){
+    var target=filmTop()+ (starts[i]+s.w*0.42)/TOTAL*range();
+    scrollTo({top:target,behavior:'smooth'});
   };
-  var narrow = window.matchMedia('(max-width:700px)').matches;
-  var step = narrow ? 2 : 1;              // na telefonie co druga klatka = połowa transferu
-  var store = {};
+  rail.appendChild(b);
+});
+var railBtns=[].slice.call(rail.children);
 
-  function pad(n){return ('000'+n).slice(-3)}
-  function listFor(k){
-    var out=[],s=seqs[k];
-    for(var i=1;i<=s.n;i+=step) out.push(s.pre+pad(i)+'.jpg');
-    if(out[out.length-1]!==s.pre+pad(s.n)+'.jpg') out.push(s.pre+pad(s.n)+'.jpg');
-    return out;
-  }
-  function load(list,onEach){
-    var imgs=[],done=0;
-    list.forEach(function(src,i){
-      var im=new Image();
-      im.onload=im.onerror=function(){done++;onEach&&onEach(done,list.length)};
-      im.src=src; imgs[i]=im;
-    });
-    return imgs;
+function filmTop(){return film.offsetTop}
+function range(){return film.offsetHeight-innerHeight}
+
+/* ---------- pętla: bezwładność + rysowanie ---------- */
+var smooth=null, raf=null, lastDrawn=-1;
+function loop(){
+  raf=null;
+  var top=filmTop(), rg=range();
+  var raw=Math.min(1,Math.max(0,(scrollY-top)/rg));
+  if(smooth===null) smooth=raw;
+  // bezwładność — obraz „dojeżdża" do scrolla, to daje wrażenie ciężaru
+  smooth+=(raw-smooth)*0.14;
+  if(Math.abs(raw-smooth)<0.00015) smooth=raw;
+
+  var T=smooth*TOTAL;
+  var i=segAt(T);
+  var s=SEG[i];
+  var t=(T-starts[i])/s.w;
+
+  // PRZEJŚCIE MIĘDZY UJĘCIAMI.
+  // Nie mieszamy dwóch kadrów naraz (dwa różne ujęcia tego samego kotła nałożone
+  // na siebie dają „ducha" — wygląda jak błąd). Zamiast tego: bieżące ujęcie gaśnie
+  // do czerni w pierwszej połowie przejścia, następne rozjaśnia się w drugiej.
+  // To zwykłe filmowe przenikanie przez czerń — czyste i celowe.
+  var localFade=FADE/s.w;
+  var over=(t-(1-localFade))/localFade;      // 0..1 w strefie przejścia
+  var ov=Math.min(1,Math.max(0,over));
+
+  ctx.fillStyle='#050608'; ctx.fillRect(0,0,CW,CH);
+  var ok=drawSeg(ctx,i,t,1);
+  if(!ok){ctx.fillStyle='#060709';ctx.fillRect(0,0,CW,CH)}
+
+  if(ov>0 && i+1<SEG.length){
+    // Następne ujęcie ODSŁANIA SIĘ od dołu miękką krawędzią i dochodzi z lekkiego
+    // zbliżenia. W żadnym punkcie nie widać dwóch obrazów naraz (żadnego „ducha"),
+    // ani czarnej dziury — kadr cały czas jest wypełniony.
+    if(buf.width!==CW||buf.height!==CH){buf.width=CW;buf.height=CH}
+    bctx.clearRect(0,0,CW,CH);
+    var e=easeIO(ov);
+    drawSeg(bctx,i+1,0,1,(1-e)*0.05);
+    var EDGE=0.34, pos=e*(1+EDGE);
+    var s0=Math.max(0,Math.min(1,pos-EDGE)), s1=Math.max(0,Math.min(1,pos));
+    if(s1<=s0) s1=Math.min(1,s0+0.001);
+    var g=bctx.createLinearGradient(0,CH,0,0);
+    g.addColorStop(0,'rgba(0,0,0,1)');
+    g.addColorStop(s0,'rgba(0,0,0,1)');
+    g.addColorStop(s1,'rgba(0,0,0,0)');
+    g.addColorStop(1,'rgba(0,0,0,0)');
+    bctx.globalCompositeOperation='destination-in';
+    bctx.fillStyle=g; bctx.fillRect(0,0,CW,CH);
+    bctx.globalCompositeOperation='source-over';
+    ctx.drawImage(buf,0,0);
   }
 
-  // --- start: ładujemy tylko hero, resztę w tle ---
-  var bootBar=document.querySelector('#boot .bar i'), boot=document.getElementById('boot');
-  store.h=load(listFor('h'),function(d,t){
-    bootBar.style.width=Math.round(d/t*100)+'%';
-    if(d===t){
-      boot.classList.add('done');
-      setTimeout(function(){boot.remove()},800);
-      ['p','b','f'].forEach(function(k){store[k]=load(listFor(k))});
+  // teksty — opacity liczone wprost z pozycji, więc trzymają się obrazu co do piksela
+  // Teksty liczone wprost z pozycji na osi — nie z numeru ujęcia. Dzięki temu napis
+  // może zostać na ekranie, gdy obraz pod nim się zmienia, albo zejść wcześniej.
+  chs.forEach(function(el,k){
+    var r=CAPS[k]; if(!r) return;
+    var a=0, sh=0;
+    if(T>=r[0] && T<=r[1]){
+      var inn = k===0 ? 1 : Math.min(1,Math.max(0,(T-r[0])/CFADE));
+      var out = Math.min(1,Math.max(0,(T-(r[1]-CFADE))/CFADE));
+      a=inn*(1-out);
+      sh=(1-inn)*26 - out*32;
     }
+    if(a<=0.002){ if(el.style.opacity!=='0'){el.style.opacity='0';el.style.visibility='hidden'} return }
+    el.style.visibility='visible';
+    el.style.opacity=a.toFixed(3);
+    el.style.transform=(el.classList.contains('hero')?'translateY(-50%) ':'')+'translateY('+sh.toFixed(1)+'px)';
   });
 
-  // --- rysowanie sekwencji na canvas ---
-  var canvases=[].slice.call(document.querySelectorAll('canvas[data-seq]'));
-  canvases.forEach(function(cv){
-    cv.ctx=cv.getContext('2d',{alpha:false});
-    cv.key=cv.dataset.seq; cv.cur=-1;
-  });
-  function fit(cv){
-    var r=cv.getBoundingClientRect(), d=Math.min(window.devicePixelRatio||1,2);
-    cv.width=Math.round(r.width*d); cv.height=Math.round(r.height*d);
-    cv.cur=-1;
-  }
-  function cover(cv,im){
-    var cw=cv.width,ch=cv.height,iw=im.naturalWidth,ih=im.naturalHeight;
-    if(!iw||!ih)return;
-    var s=Math.max(cw/iw,ch/ih), w=iw*s, h=ih*s;
-    cv.ctx.drawImage(im,(cw-w)/2,(ch-h)/2,w,h);
-  }
-  function draw(cv,p){
-    var arr=store[cv.key]; if(!arr||!arr.length)return;
-    var i=Math.min(arr.length-1,Math.max(0,Math.round(p*(arr.length-1))));
-    if(i===cv.cur)return;
-    var im=arr[i];
-    if(im&&im.complete&&im.naturalWidth){cv.cur=i;cover(cv,im)}
-  }
-
-  // --- postęp sceny ---
-  function progressOf(sec){
-    var r=sec.getBoundingClientRect(), vh=window.innerHeight;
-    var total=r.height-vh;
-    if(total<=0)return 0;
-    return Math.min(1,Math.max(0,(-r.top)/total));
-  }
-
-  var scenes=[].slice.call(document.querySelectorAll('.scene'));
-  var caps=[].slice.call(document.querySelectorAll('.cap'));
-  var parts=[].slice.call(document.querySelectorAll('.part'));
-  var stills=[].slice.call(document.querySelectorAll('[data-par]'));
-  var heroTxt=document.getElementById('heroTxt');
-  var hint=document.querySelector('.scrollhint');
-  var hdr=document.getElementById('hdr');
-  var partsScene=document.getElementById('s-parts');
-  var ticking=false;
-
-  function frame(){
-    ticking=false;
-    var vh=window.innerHeight;
-
-    scenes.forEach(function(sec){
-      var r=sec.getBoundingClientRect();
-      if(r.bottom<-200||r.top>vh+200)return;      // poza kadrem — nie liczymy
-      var p=progressOf(sec);
-
-      var cv=sec.querySelector('canvas[data-seq]');
-      if(cv){ if(!cv.width)fit(cv); draw(cv,p); }
-
-      var still=sec.querySelector('[data-par]');
-      if(still){ still.style.transform='scale(1.05) translateY('+((p-0.5)*-26)+'px)'; }
-
-      var cap=sec.querySelector('.cap');
-      if(cap){ cap.classList.toggle('in', p>0.14 && p<0.94); }
+  // części pod pokrywą — zapalają się kolejno, w rytmie tego samego ujęcia
+  var PR=[2.86,3.92];
+  var pa = (T>PR[0]&&T<PR[1])
+    ? Math.min(1,(T-PR[0])/0.2)*(1-Math.min(1,Math.max(0,(T-(PR[1]-0.22))/0.22)))
+    : 0;
+  partsBox.style.opacity=pa.toFixed(3);
+  partsBox.style.visibility = pa>0.002?'visible':'hidden';
+  if(pa>0.002){
+    parts.forEach(function(el,k){
+      var v=Math.min(1,Math.max(0,(T-(PR[0]+0.16+k*0.2))/0.14));
+      el.style.opacity=(0.24+0.76*v).toFixed(3);
+      el.style.borderLeftColor= v>0.5?'#ff8b3d':'#23272e';
+      el.style.transform='translateX('+(v*5).toFixed(1)+'px)';
     });
-
-    // hero: tekst znika przy zjeżdżaniu
-    var hr=document.getElementById('s-hero').getBoundingClientRect();
-    var hp=progressOf(document.getElementById('s-hero'));
-    if(heroTxt){
-      var o=Math.max(0,1-hp*2.4);
-      heroTxt.style.opacity=o;
-      heroTxt.style.transform='translateY('+(hp*-40)+'px)';
-      if(hint)hint.style.opacity=Math.max(0,1-hp*6);
-    }
-    hdr.classList.toggle('stuck', hr.bottom < vh*0.85);
-
-    // podświetlanie części
-    if(partsScene){
-      var pp=progressOf(partsScene);
-      parts.forEach(function(el){ el.classList.toggle('on', pp>=parseFloat(el.dataset.at)); });
-    }
   }
-  function onScroll(){ if(!ticking){ticking=true;requestAnimationFrame(frame)} }
-  window.__frame=frame;   // furtka do weryfikacji w automatyce (rAF zamarza w karcie bez fokusu)
 
-  window.addEventListener('scroll',onScroll,{passive:true});
-  window.addEventListener('resize',function(){canvases.forEach(fit);onScroll()});
-  window.addEventListener('load',function(){canvases.forEach(fit);onScroll()});
-  setTimeout(function(){canvases.forEach(fit);onScroll()},60);
-  setInterval(onScroll,400);   // dociąga klatki, które doładowały się po przewinięciu
+  // przyciemnienie pod tekstem mocniejsze tam, gdzie napis stoi na jasnym kadrze
+  shade.style.opacity = (T<1.1?1:0.84);
 
-  document.querySelectorAll('a[href^="#"]').forEach(function(a){
-    a.addEventListener('click',function(e){
-      var t=document.querySelector(a.getAttribute('href'));
-      if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}
-    });
+  // pasek postępu + szyna rozdziałów
+  pfill.style.width=(smooth*100).toFixed(2)+'%';
+  if(lastDrawn!==i){
+    lastDrawn=i;
+    railBtns.forEach(function(b,k){b.classList.toggle('on',k===i)});
+  }
+  if(hint) hint.style.opacity=Math.max(0,1-smooth*14).toFixed(2);
+  hdr.classList.toggle('stuck', scrollY>innerHeight*0.75);
+
+  if(Math.abs(raw-smooth)>0.00015) request();
+}
+function request(){ if(!raf) raf=requestAnimationFrame(loop) }
+
+addEventListener('scroll',request,{passive:true});
+addEventListener('resize',function(){fit();smooth=null;request()});
+addEventListener('load',function(){fit();request()});
+fit(); request();
+setInterval(request,500);            // dociąga klatki, które doszły po przewinięciu
+window.__frame=function(){smooth=null;loop();loop()};   // furtka do testów (rAF zamarza bez fokusu)
+
+/* ---------- wejścia sekcji + mikro-detale ---------- */
+var io=new IntersectionObserver(function(es){
+  es.forEach(function(e){ if(e.isIntersecting){e.target.classList.add('on');io.unobserve(e.target)} });
+},{rootMargin:'0px 0px -12% 0px',threshold:.12});
+document.querySelectorAll('.reveal').forEach(function(el,i){
+  el.style.transitionDelay=(Math.min(i,6)*0.055)+'s';
+  io.observe(el);
+});
+
+document.querySelectorAll('.card').forEach(function(c){
+  c.addEventListener('pointermove',function(e){
+    var r=c.getBoundingClientRect();
+    c.style.setProperty('--mx',((e.clientX-r.left)/r.width*100)+'%');
+    c.style.setProperty('--my',((e.clientY-r.top)/r.height*100)+'%');
   });
+});
+
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var t=document.querySelector(a.getAttribute('href'));
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}
+  });
+});
+
+/* wysokość filmu wynika z sumy wag — jedna scena = jedna „długość" scrolla */
+function sizeFilm(){ film.style.height=(TOTAL*105+100)+'vh' }
+sizeFilm();
+addEventListener('resize',sizeFilm);
 })();
 </script>
 </body>
