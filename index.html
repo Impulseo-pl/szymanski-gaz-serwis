@@ -458,6 +458,10 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
 
 @media(min-width:1001px){.ch{left:clamp(92px,9.5vw,158px)}}
 @media(max-width:1000px){
+  /* bez tego kafle zostają w 4 kolumnach i na telefonie tekst łamie się po słowie */
+  .bento{grid-template-columns:repeat(2,1fr)}
+  .b-w2,.b-w2b{grid-column:span 2}
+  .b-w2b{grid-row:auto}
   .quotes{grid-template-columns:1fr}
   .steps{grid-template-columns:repeat(2,1fr);gap:36px 0}
   .steps::before{display:none}
@@ -465,6 +469,12 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
   .trust{grid-template-columns:repeat(2,1fr)}
 }
 @media(max-width:700px){
+  .bento{grid-template-columns:1fr;gap:12px}
+  .b-w2,.b-w2b{grid-column:span 1}
+  .bx{padding:26px 22px;border-radius:18px}
+  .season{flex-direction:column;align-items:flex-start;gap:22px}
+  .season .cnt{width:100%}
+  .season .cell{flex:1;min-width:0}
   .shade{background:linear-gradient(180deg,rgba(5,6,8,.78) 0%,rgba(5,6,8,.4) 32%,rgba(5,6,8,.58) 62%,rgba(5,6,8,.94) 100%)}
   header{padding:12px 15px}
   .brand{font-size:13px}
@@ -667,14 +677,14 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
       <li><button type="button" data-img="img/0-hero.jpg" data-t="Praca pod obciążeniem" data-k="08"><span class="row1"><span class="no">08</span><span class="tt">Praca pod obciążeniem</span></span><span class="dd">Kontrolne uruchomienie i pomiar po regulacji</span></button></li>
     </ul>
     <div id="peekimg">
-      <img src="img/3-palnik.jpg" alt="Palnik i obraz płomienia" data-k="01" class="on">
-      <img src="img/4-wymiennik.jpg" alt="Wymiennik ciepła" data-k="02">
-      <img src="img/5-pompa.jpg" alt="Pompa i ciśnienie" data-k="03">
-      <img src="img/2-obudowa.jpg" alt="Szczelność połączeń" data-k="04">
-      <img src="img/6-brudny.jpg" alt="Osad i korozja" data-k="05">
-      <img src="img/7-final.jpg" alt="Sterownik i parametry" data-k="06">
-      <img src="img/1-zamkniety.jpg" alt="Odprowadzenie spalin" data-k="07">
-      <img src="img/0-hero.jpg" alt="Praca pod obciążeniem" data-k="08">
+      <img decoding="async" src="img/3-palnik.jpg" alt="Palnik i obraz płomienia" data-k="01" class="on">
+      <img loading="lazy" decoding="async" src="img/4-wymiennik.jpg" alt="Wymiennik ciepła" data-k="02">
+      <img loading="lazy" decoding="async" src="img/5-pompa.jpg" alt="Pompa i ciśnienie" data-k="03">
+      <img loading="lazy" decoding="async" src="img/2-obudowa.jpg" alt="Szczelność połączeń" data-k="04">
+      <img loading="lazy" decoding="async" src="img/6-brudny.jpg" alt="Osad i korozja" data-k="05">
+      <img loading="lazy" decoding="async" src="img/7-final.jpg" alt="Sterownik i parametry" data-k="06">
+      <img loading="lazy" decoding="async" src="img/1-zamkniety.jpg" alt="Odprowadzenie spalin" data-k="07">
+      <img loading="lazy" decoding="async" src="img/0-hero.jpg" alt="Praca pod obciążeniem" data-k="08">
       <div class="cap"><i id="pcapk">01</i><span id="pcapt">Palnik i obraz płomienia</span></div>
     </div>
   </div>
@@ -686,8 +696,8 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
     <p class="sub">Złap suwak i przeciągnij. Po lewej stan przed czyszczeniem, po prawej po serwisie. Ta różnica to Twój rachunek za gaz.</p>
   </div>
   <div class="cmp reveal" id="cmp" data-cur="Przeciągnij">
-    <img src="img/cmp-przed.jpg" alt="Wymiennik pokryty sadzą przed czyszczeniem">
-    <img class="after" src="img/cmp-po.jpg" alt="Ten sam wymiennik po czyszczeniu">
+    <img loading="lazy" decoding="async" src="img/cmp-przed.jpg" alt="Wymiennik pokryty sadzą przed czyszczeniem">
+    <img class="after" loading="lazy" decoding="async" src="img/cmp-po.jpg" alt="Ten sam wymiennik po czyszczeniu">
     <div class="tag tl">Przed</div>
     <div class="tag tr">Po serwisie</div>
     <div class="hnd"></div>
@@ -1247,6 +1257,17 @@ addEventListener('resize',function(){
     var r=c.getBoundingClientRect();
     tgt=R((x-r.left)/r.width*100,2,98);
   }
+  // obsługa klawiatury — suwak da się przesunąć strzałkami
+  c.tabIndex=0;
+  c.setAttribute('role','slider');
+  c.setAttribute('aria-label','Porównanie wymiennika przed i po czyszczeniu');
+  c.setAttribute('aria-valuemin','0');c.setAttribute('aria-valuemax','100');
+  c.addEventListener('keydown',function(e){
+    var d=e.key==='ArrowLeft'?-6:e.key==='ArrowRight'?6:0;
+    if(!d)return;
+    e.preventDefault();seen=true;tgt=R(tgt+d,2,98);
+    c.setAttribute('aria-valuenow',Math.round(tgt));
+  });
   c.addEventListener('pointerdown',function(e){drag=true;seen=true;set(e.clientX);c.setPointerCapture(e.pointerId)});
   c.addEventListener('pointermove',function(e){if(drag||e.pointerType==='mouse'){seen=true;set(e.clientX)}});
   c.addEventListener('pointerup',function(){drag=false});
@@ -1329,10 +1350,15 @@ addEventListener('scroll',function(){
 },{passive:true});
 var mqin=document.getElementById('mqin');mqin.innerHTML+=mqin.innerHTML;
 
+var REDUCE=matchMedia('(prefers-reduced-motion: reduce)').matches;
 document.querySelectorAll('a[href^="#"]').forEach(function(a){
   a.addEventListener('click',function(e){
     var t=document.querySelector(a.getAttribute('href'));
-    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}
+    if(!t)return;
+    e.preventDefault();
+    // liczymy pozycję sami — pewniejsze niż scrollIntoView i respektuje ustawienie
+    // „ogranicz animacje" w systemie
+    scrollTo({top:t.getBoundingClientRect().top+scrollY-8,behavior:REDUCE?'auto':'smooth'});
   });
 });
 
