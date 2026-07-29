@@ -76,6 +76,10 @@ a{color:inherit}
 .cur.label b{opacity:1;transform:none}
 .cur.wide{width:76px;height:76px;background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16)}
 .cur.label ~ .curd,.cur.wide ~ .curd{opacity:0;transform:translate(-50%,-50%) scale(.3)}
+/* własny kursor zastępuje systemowy — bez tego widać dwa naraz */
+@media(hover:hover) and (pointer:fine){
+  html,body,a,button,.cmp,.peek button,[data-mag]{cursor:none}
+}
 @media(hover:none){.cur,.curd{display:none}}
 
 /* ---------- ekran startowy ---------- */
@@ -219,7 +223,7 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
 
 /* ---------- suwak przed / po ---------- */
 .cmp{position:relative;margin-top:50px;border-radius:24px;overflow:hidden;border:1px solid var(--line);
-  aspect-ratio:16/9;cursor:ew-resize;background:#050608;touch-action:none;user-select:none}
+  aspect-ratio:14/9;cursor:ew-resize;background:#050608;touch-action:none;user-select:none}
 .cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 .cmp .after{clip-path:inset(0 0 0 var(--sp,50%))}
 .cmp .hnd{position:absolute;top:0;bottom:0;left:var(--sp,50%);width:2px;background:rgba(255,255,255,.9);
@@ -237,10 +241,10 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
 .cmp .tr{right:18px;color:#7fd18a}
 
 /* nagłówek wypełniony kadrem */
-/* napis wypełniony kadrem miedzi — jaśniejszy fragment, inaczej litery giną w tle */
-.imgtext{background-image:url(img/4-wymiennik.jpg);background-size:190% auto;background-position:22% 38%;
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-  filter:brightness(1.9) contrast(1.25) saturate(1.35)}
+/* Napis wypełniony zdjęciem odpadł: przy każdym kadrze litery robiły się plamiste
+   i czytało się to jak błąd renderowania, a nie efekt. Został czysty gradient. */
+.imgtext{background-image:linear-gradient(96deg,var(--flame) 0%,var(--flame2) 42%,#ffe0c6 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent}
 
 /* ---------- lista, która odsłania kadr pod kursorem ---------- */
 /* lista po lewej, kadr w osobnej kolumnie po prawej — podgląd przy kursorze
@@ -353,7 +357,18 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
 .dock a{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:100px;
   background:var(--flame);color:#180d04;text-decoration:none;font-weight:600;font-size:14px;white-space:nowrap}
 .dock a svg{width:14px;height:14px;fill:currentColor}
-@media(max-width:700px){.dock{display:flex}}
+/* WhatsApp w dolnym pasku dziedziczył pomarańczowe tło z `.dock a` — zostawał
+   pomarańczowy krążek z zieloną ikoną. Przywracamy zieleń. */
+.dock .wa{background:rgba(37,211,102,.14);color:#8fe3ad;border:1px solid #2f6b45}
+@media(max-width:700px){
+  .dock{display:flex}
+  /* żeby pasek nie przykrywał końcówki treści */
+  body{padding-bottom:88px}
+  /* etykiety suwaka stykały się na środku wąskiego ekranu */
+  .cmp .tag{font-size:10.5px;padding:7px 11px;letter-spacing:.08em}
+  .cmp .tl{left:10px} .cmp .tr{right:10px}
+  .cmp .hnd::after{width:44px;height:44px}
+}
 
 /* ---------- marquee ---------- */
 .mq{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
@@ -382,7 +397,8 @@ section.block{padding:clamp(88px,13vh,150px) clamp(20px,6.5vw,104px);border-top:
 
 /* usługi — pas przewijany w poziomie */
 #uslugi{padding-bottom:0}
-.hwrap{position:relative;height:480vh}
+/* pas startuje zaraz pod nagłówkiem — wcześniej zostawała pusta dziura na ekran */
+.hwrap{position:relative;height:480vh;margin-top:clamp(-40px,-3vw,-10px)}
 .hsticky{position:sticky;top:0;height:100vh;display:flex;align-items:center;overflow:hidden}
 .htrack{display:flex;gap:22px;padding:0 clamp(20px,6.5vw,104px);will-change:transform}
 .hcard{position:relative;flex:0 0 min(420px,80vw);height:min(460px,62vh);
@@ -611,22 +627,22 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
 <div class="hwrap" id="hwrap">
   <div class="hsticky">
     <div class="htrack" id="htrack">
-      <article class="hcard" data-cur="Usługa"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M20.6 8.4a2 2 0 0 1 0 2.8l-9.4 9.4-4.2-4.2 9.4-9.4a2 2 0 0 1 2.8 0zM7 16.6 4 20l3.4-1"/></svg></div></div>
+      <article class="hcard"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M20.6 8.4a2 2 0 0 1 0 2.8l-9.4 9.4-4.2-4.2 9.4-9.4a2 2 0 0 1 2.8 0zM7 16.6 4 20l3.4-1"/></svg></div></div>
         <div><h3>Przegląd i konserwacja</h3><p>Coroczny serwis: czyszczenie, kontrola szczelności, pomiar spalin i ustawienie parametrów.</p></div>
         <div class="n">01</div></article>
-      <article class="hcard" data-cur="Usługa"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></div></div>
+      <article class="hcard"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h6l-1 8 9-12h-6z"/></svg></div></div>
         <div><h3>Naprawa awarii</h3><p>Kocioł zgasł, pokazuje błąd albo nie grzeje wody. Diagnoza i naprawa w umówionym terminie.</p></div>
         <div class="n">02</div></article>
-      <article class="hcard" data-cur="Usługa"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12h-6v-7H9v7z"/></svg></div></div>
+      <article class="hcard"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12h-6v-7H9v7z"/></svg></div></div>
         <div><h3>Wymiana i montaż</h3><p>Dobór kotła pod metraż i instalację, demontaż starego, montaż i uruchomienie nowego.</p></div>
         <div class="n">03</div></article>
-      <article class="hcard" data-cur="Usługa"><div><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div></div>
+      <article class="hcard"><div><div class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div></div>
         <div><h3>Uruchomienie i ustawienie</h3><p>Pierwsze uruchomienie po montażu, ustawienie krzywej grzewczej i temperatur pod Twój dom.</p></div>
         <div class="n">04</div></article>
-      <article class="hcard" data-cur="Usługa"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></div></div>
+      <article class="hcard"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></div></div>
         <div><h3>Czyszczenie wymiennika i palnika</h3><p>Usunięcie sadzy i osadu — realny wpływ na zużycie gazu i moc grzewczą kotła.</p></div>
         <div class="n">05</div></article>
-      <article class="hcard" data-cur="Usługa"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3v18M18 3v18M6 8h12M6 16h12"/></svg></div></div>
+      <article class="hcard"><div><div class="ic"><svg viewBox="0 0 24 24"><path d="M6 3v18M18 3v18M6 8h12M6 16h12"/></svg></div></div>
         <div><h3>Instalacje C.O. i kotłownie</h3><p>Wykonanie instalacji centralnego ogrzewania i kompletnych kotłowni w domach jednorodzinnych.</p></div>
         <div class="n">06</div></article>
     </div>
@@ -670,8 +686,8 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
     <p class="sub">Złap suwak i przeciągnij. Po lewej stan przed czyszczeniem, po prawej po serwisie. Ta różnica to Twój rachunek za gaz.</p>
   </div>
   <div class="cmp reveal" id="cmp" data-cur="Przeciągnij">
-    <img src="img/6-brudny.jpg" alt="Zaniedbany wymiennik pokryty sadzą">
-    <img class="after" src="img/4-wymiennik.jpg" alt="Wymiennik po czyszczeniu">
+    <img src="img/cmp-przed.jpg" alt="Wymiennik pokryty sadzą przed czyszczeniem">
+    <img class="after" src="img/cmp-po.jpg" alt="Ten sam wymiennik po czyszczeniu">
     <div class="tag tl">Przed</div>
     <div class="tag tr">Po serwisie</div>
     <div class="hnd"></div>
@@ -713,15 +729,15 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
     <h2 class="h2">To, o co pytacie przez telefon</h2>
   </div>
   <div class="faq reveal" id="faq">
-    <div class="fq" data-cur="Rozwiń"><button type="button">Jak często robi się przegląd kotła?<span class="pm"></span></button>
+    <div class="fq"><button type="button">Jak często robi się przegląd kotła?<span class="pm"></span></button>
       <div class="ans"><p>Raz w roku, najlepiej przed sezonem grzewczym — czyli latem albo wczesną jesienią. Producenci kotłów uzależniają od tego gwarancję, a ubezpieczyciel może pytać o przegląd przy szkodzie. Poza gwarancją chodzi o zwykłą arytmetykę: zabrudzony wymiennik zużywa więcej gazu przez całą zimę.</p></div></div>
-    <div class="fq" data-cur="Rozwiń"><button type="button">Ile kosztuje przegląd?<span class="pm"></span></button>
+    <div class="fq"><button type="button">Ile kosztuje przegląd?<span class="pm"></span></button>
       <div class="ans"><p>Cena zależy od modelu kotła i tego, w jakim jest stanie. Dlatego podaję ją przez telefon, zanim przyjadę — wystarczy, że powiesz, jaki masz kocioł. Nie ma u mnie wyceniania „na miejscu zobaczymy".</p></div></div>
-    <div class="fq" data-cur="Rozwiń"><button type="button">Kocioł pokazuje błąd i zgasł. Co robić?<span class="pm"></span></button>
+    <div class="fq"><button type="button">Kocioł pokazuje błąd i zgasł. Co robić?<span class="pm"></span></button>
       <div class="ans"><p>Zadzwoń i przeczytaj mi kod błędu z wyświetlacza. Duża część usterek to sprawy, które da się wstępnie ocenić przez telefon — czasem wystarczy uzupełnić ciśnienie albo odblokować kocioł, a czasem potrzebna jest część i lepiej, żebym przyjechał od razu z nią.</p></div></div>
-    <div class="fq" data-cur="Rozwiń"><button type="button">Robisz też wymianę starego kotła na nowy?<span class="pm"></span></button>
+    <div class="fq"><button type="button">Robisz też wymianę starego kotła na nowy?<span class="pm"></span></button>
       <div class="ans"><p>Tak. Dobieram kocioł pod metraż domu i istniejącą instalację, demontuję stary, montuję i uruchamiam nowy oraz ustawiam parametry. Wykonuję też całe instalacje centralnego ogrzewania i kotłownie w domach jednorodzinnych.</p></div></div>
-    <div class="fq" data-cur="Rozwiń"><button type="button">Na jaki obszar dojeżdżasz?<span class="pm"></span></button>
+    <div class="fq"><button type="button">Na jaki obszar dojeżdżasz?<span class="pm"></span></button>
       <div class="ans"><p>Gniezno i okolice — Witkowo, Trzemeszno, Czerniejewo, Kłecko i sąsiednie miejscowości. Jeśli nie masz pewności, czy dojadę pod Twój adres, po prostu zadzwoń i zapytaj.</p></div></div>
   </div>
 </section>
