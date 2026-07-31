@@ -157,6 +157,9 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
   background:radial-gradient(circle,rgba(255,139,61,.10) 0%,rgba(255,139,61,.045) 34%,transparent 68%)}
 .exwrap{position:absolute;left:var(--ecx,68%);top:var(--ecy,44%);width:0;height:0;
   will-change:transform;perspective:1600px}
+.exlines{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.exlines line{stroke:#4a525c;stroke-width:1;stroke-dasharray:2 7}
+.exlines circle{fill:none;stroke:#4a525c;stroke-width:1}
 .expart{position:absolute;left:0;top:0;width:0;height:0;will-change:transform,opacity}
 .expart img{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:block;
   filter:drop-shadow(0 26px 54px rgba(0,0,0,.72));transition:filter .55s var(--ease)}
@@ -512,7 +515,8 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
      dużą, nad tekstem; podpis i tak siedzi na dole jak w pozostałych rozdziałach */
   .explode::before{width:86vw;height:86vw}
   .expart b{font-size:10px;letter-spacing:.16em}
-  .exdots{left:50%;bottom:auto;top:calc(var(--ecy,32%) + 30vw)}
+  /* kropki muszą wypaść PONIŻEJ podpisu najwyższej części, inaczej się nakładają */
+  .exdots{left:50%;bottom:auto;top:calc(var(--ecy,33%) + 34vw + 26px)}
   .ch.exp{max-width:none}
   .hwrap{height:auto}
   .hsticky{position:static;height:auto;display:block;padding:0}
@@ -566,12 +570,12 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
         <p>Biała obudowa i cicha praca nie mówią nic o tym, w jakim stanie jest urządzenie w środku.</p></div>
 
       <div class="ch"><div class="kick"><i>Pod pokrywą</i></div>
-        <h2 class="kin">W środku pracuje sześć urządzeń</h2>
-        <p>Każde z nich może się zużyć, zabrudzić albo rozregulować. Awaria to zwykle jedno z nich — nie „cały kocioł do wymiany".</p></div>
+        <h2 class="kin">W środku pracuje kilkanaście elementów</h2>
+        <p>Każdy może się zużyć, zabrudzić albo rozregulować. Awaria to zwykle jeden z nich — nie „cały kocioł do wymiany".</p></div>
 
       <div class="ch exp" id="exdesc"><div class="kick"><i data-k>Budowa</i></div>
         <h2 class="kin" data-h>Rozłóżmy go na części</h2>
-        <p data-p>Przewijaj — obudowa schodzi, a każdy element pokazuje się osobno.</p></div>
+        <p data-p>Sześć podzespołów, od których najczęściej zaczyna się awaria.</p></div>
 
       <div class="ch"><div class="kick"><i>Serce urządzenia</i></div>
         <h2 class="kin">Płomień musi być równy i niebieski</h2>
@@ -596,6 +600,7 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
 
     <div class="explode" id="explode" aria-hidden="true">
       <div class="exwrap" id="exwrap">
+        <svg class="exlines" id="exlines" width="1" height="1" aria-hidden="true"></svg>
         <div class="expart" data-s="img/exp/palnik.webp"><img alt=""><b><em>01</em>Palnik</b></div>
         <div class="expart" data-s="img/exp/wymiennik.webp"><img alt=""><b><em>02</em>Wymiennik</b></div>
         <div class="expart" data-s="img/exp/naczynie.webp"><img alt=""><b><em>03</em>Naczynie</b></div>
@@ -1070,27 +1075,34 @@ var railBtns=[].slice.call(rail.children);
    ang = kierunek, w który odjeżdża (stopnie, 0 = w prawo); w = szerokość w ułamku
    wysokości ekranu (desktop) / szerokości ekranu (telefon, pole mw). */
 var EXP=[
-  {ang:-90, w:0.40, mw:0.90, k:'Część 01 z 06', h:'Palnik',
+  {ang:-90, w:0.42, mw:0.92, k:'Część 01 z 06', h:'Palnik',
    p:'Tu gaz miesza się z powietrzem i się pali. Zabrudzone dysze dają żółty, kopcący płomień — spalasz więcej gazu, a ciepła masz mniej.'},
-  {ang:-30, w:0.22, mw:0.60, k:'Część 02 z 06', h:'Wymiennik ciepła',
+  {ang:-30, w:0.27, mw:0.68, k:'Część 02 z 06', h:'Wymiennik ciepła',
    p:'Przekazuje ciepło ze spalin do wody, która krąży w grzejnikach. Każdy milimetr sadzy na żeberkach to ciepło uciekające kominem.'},
-  {ang:30,  w:0.17, mw:0.46, k:'Część 03 z 06', h:'Naczynie przeponowe',
+  {ang:30,  w:0.175,mw:0.48, k:'Część 03 z 06', h:'Naczynie przeponowe',
    p:'Przejmuje wodę, która przy nagrzewaniu zwiększa objętość. Gdy straci powietrze, ciśnienie skacze i kocioł zrzuca wodę zaworem.'},
-  {ang:90,  w:0.23, mw:0.64, k:'Część 04 z 06', h:'Sterownik',
+  {ang:90,  w:0.20, mw:0.58, k:'Część 04 z 06', h:'Sterownik',
    p:'Elektronika, która zapala palnik, pilnuje temperatury i wyłącza kocioł przy usterce. Stąd biorą się kody błędów na wyświetlaczu.'},
-  {ang:150, w:0.20, mw:0.54, k:'Część 05 z 06', h:'Wentylator',
+  {ang:150, w:0.175,mw:0.50, k:'Część 05 z 06', h:'Wentylator',
    p:'Wypycha spaliny na zewnątrz i dociąga powietrze do spalania. Zarośnięty osadem potrafi blokować zapłon i wybijać kocioł na błąd.'},
-  {ang:210, w:0.155,mw:0.40, k:'Część 06 z 06', h:'Pompa obiegowa',
+  {ang:210, w:0.115,mw:0.34, k:'Część 06 z 06', h:'Pompa obiegowa',
    p:'Rozprowadza gorącą wodę po całym domu. Zapowietrzona albo zatarta zostawia zimne grzejniki na końcu obiegu, zwykle na piętrze.'}
 ];
 var EXTRO={k:'Budowa kotła', h:'Rozłóżmy go na części',
-  p:'Sześć elementów, które muszą zagrać razem. Przewijaj — obudowa schodzi, a każdy z nich pokazuje się osobno.'};
+  p:'Sześć podzespołów, od których najczęściej zaczyna się awaria. Przewijaj — obudowa schodzi, a każdy pokazuje się osobno.'};
 var EXOUT={k:'Przegląd', h:'I z powrotem w całość',
   p:'Przy przeglądzie przechodzę po kolei przez każdy z tych elementów. Dlatego wiem, co się zepsuje, zanim się zepsuje.'};
 
 var exBox=document.getElementById('explode'),exWrap=document.getElementById('exwrap');
 var exCase=document.getElementById('excase'),exDesc=document.getElementById('exdesc');
 var exParts=[].slice.call(exWrap.querySelectorAll('.expart'));
+var exLines=document.getElementById('exlines');
+// kreski prowadzące od środka do każdej części — tak rysuje się widok rozstrzelony;
+// bez nich elementy wyglądają jak przypadkowo rozrzucone, a nie jak wyjęte z jednego kotła
+EXP.forEach(function(){exLines.appendChild(document.createElementNS('http://www.w3.org/2000/svg','line'))});
+var exCirc=document.createElementNS('http://www.w3.org/2000/svg','circle');
+exCirc.setAttribute('r','4');exLines.appendChild(exCirc);
+var exLineEls=[].slice.call(exLines.querySelectorAll('line'));
 var exDots=document.getElementById('exdots');
 EXP.forEach(function(){exDots.appendChild(document.createElement('i'))});
 var exDotEls=[].slice.call(exDots.children);
@@ -1117,7 +1129,7 @@ function exText(c){
 }
 function exFrame(t){
   exLoad();
-  var vis=R(t/0.028,0,1)*(1-R((t-0.895)/0.055,0,1));
+  var vis=R(t/0.028,0,1)*(1-R((t-0.885)/0.048,0,1));
   if(vis<=0.004){exHide();return}
   exShown=true;exBox.style.visibility='visible';exBox.style.opacity=vis.toFixed(3);
 
@@ -1144,6 +1156,9 @@ function exFrame(t){
     (-caseF*(nar?H*0.26:r*0.55)).toFixed(1)+'px,0) scale('+(1+caseF*0.06).toFixed(3)+') '+
     'rotateY('+(caseF*13).toFixed(1)+'deg) rotateX('+(-caseF*6).toFixed(1)+'deg)';
 
+  // kreski: rysowane tylko na dużym ekranie, od 20% do 74% promienia
+  exLines.style.opacity=(nar?0:spread*0.85).toFixed(3);
+  exCirc.setAttribute('opacity',nar?0:(spread*0.5).toFixed(2));
   exParts.forEach(function(el,k){
     var d=EXP[k];
     // pełna jasność przez środek okna, miękkie zejście dopiero przy krawędziach —
@@ -1174,6 +1189,12 @@ function exFrame(t){
       op=R(sp*2.4,0,1)*(1-hl*0.62*(1-hot));
       sc=0.44+0.56*sp+0.08*hot;
       lab.style.opacity=(R(sp*2.4,0,1)*(0.62+0.38*hot)).toFixed(3);
+    }
+    if(!nar){
+      var ln=exLineEls[k],a2=d.ang*Math.PI/180,rr=r*(0.07+0.93*sp);
+      ln.setAttribute('x1',(Math.cos(a2)*rr*0.20).toFixed(1));ln.setAttribute('y1',(Math.sin(a2)*rr*0.20).toFixed(1));
+      ln.setAttribute('x2',(Math.cos(a2)*rr*0.74).toFixed(1));ln.setAttribute('y2',(Math.sin(a2)*rr*0.74).toFixed(1));
+      ln.setAttribute('stroke',hot>0.55?'#ff8b3d':'#4a525c');
     }
     el.classList.toggle('on',hot>0.55);
     el.style.opacity=op.toFixed(3);
@@ -1538,7 +1559,12 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
 });
 
 /* ile ekranu scrolla przypada na jednostkę osi — im więcej, tym spokojniej płynie film */
-function sizeFilm(){film.style.height=(TOTAL*178+100)+'vh'}
+function sizeFilm(){
+  // na telefonie scena pokazuje jedną część naraz, więc nie potrzebuje tyle
+  // przewijania co pierścień na dużym ekranie — inaczej film ciągnie się bez końca
+  var per=matchMedia('(max-width:700px)').matches?134:178;
+  film.style.height=(TOTAL*per+100)+'vh';
+}
 sizeFilm();addEventListener('resize',sizeFilm);
 })();
 </script>
