@@ -47,7 +47,7 @@
 :root{
   --bg:#08090b; --ink:#f4f2f0; --dim:#9ba1a9; --dim2:#6b727a;
   --line:#1b1f25; --line2:#252a31;
-  --flame:#ff8b3d; --flame2:#ffab6e;
+  --flame:#e9e4dc; --flame2:#ffffff;
   --ease:cubic-bezier(.22,.68,.28,1);
   --eout:cubic-bezier(.16,1,.3,1);
   color-scheme:dark;
@@ -57,7 +57,7 @@ html,body{overflow-x:clip}
 body{background:var(--bg);color:var(--ink);
   font:16px/1.65 Inter,-apple-system,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
 h1,h2,h3{font-family:Sora,Inter,sans-serif;letter-spacing:-.03em;line-height:1.02}
-::selection{background:var(--flame);color:#180d04}
+::selection{background:#e9e4dc;color:#14161a}
 a{color:inherit}
 
 /* ---------- kursor ---------- */
@@ -76,11 +76,8 @@ a{color:inherit}
 .cur.label b{opacity:1;transform:none}
 .cur.wide{width:76px;height:76px;background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.16)}
 .cur.label ~ .curd,.cur.wide ~ .curd{opacity:0;transform:translate(-50%,-50%) scale(.3)}
-/* własny kursor zastępuje systemowy — bez tego widać dwa naraz */
-@media(hover:hover) and (pointer:fine){
-  html,body,a,button,.cmp,.peek button,[data-mag]{cursor:none}
-}
-@media(hover:none){.cur,.curd{display:none}}
+/* własny kursor ZDJĘTY (decyzja K. 31.07) — kółko lecące za myszką rozpraszało */
+.cur,.curd{display:none!important}
 
 /* ---------- ekran startowy ---------- */
 #boot{position:fixed;inset:0;z-index:300;background:var(--bg);
@@ -102,7 +99,7 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
 .brand{font-family:Sora;font-weight:600;font-size:15px;white-space:nowrap}
 .brand span{color:var(--flame)}
 .mag{display:inline-flex;align-items:center;gap:9px;padding:11px 21px;border-radius:100px;
-  text-decoration:none;background:var(--flame);color:#180d04;font-weight:600;font-size:14.5px;white-space:nowrap;
+  text-decoration:none;background:#f2efe9;color:#14161a;font-weight:600;font-size:14.5px;white-space:nowrap;
   will-change:transform;transition:background .3s}
 .mag:hover{background:var(--flame2)}
 .mag svg{width:15px;height:15px;fill:currentColor}
@@ -162,13 +159,13 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
   filter:drop-shadow(0 30px 70px rgba(0,0,0,.8))}
 /* światło bijące z otwartego kotła */
 .opglow{position:absolute;border-radius:50%;pointer-events:none;mix-blend-mode:screen;
-  background:radial-gradient(circle,rgba(255,150,54,.85) 0%,rgba(255,110,30,.42) 26%,rgba(255,90,20,.12) 52%,transparent 74%)}
+  background:radial-gradient(circle,rgba(255,214,168,.5) 0%,rgba(255,190,130,.22) 26%,rgba(255,175,110,.07) 52%,transparent 74%)}
 /* w zbliżeniach kadr robi się jasny i tekst ginie — ten gradient wchodzi tylko
    wtedy, gdy kamera jest w środku kotła */
 .opshade{position:absolute;inset:0;pointer-events:none;opacity:0;
   background:linear-gradient(96deg,rgba(4,5,7,.95) 0%,rgba(4,5,7,.9) 22%,rgba(4,5,7,.6) 38%,rgba(4,5,7,.14) 54%,transparent 68%)}
 .opflash{position:absolute;inset:0;z-index:6;pointer-events:none;opacity:0;mix-blend-mode:screen;
-  background:radial-gradient(60% 50% at 58% 48%,rgba(255,146,58,.55) 0%,rgba(255,105,25,.22) 40%,transparent 72%)}
+  background:radial-gradient(60% 50% at 58% 48%,rgba(255,226,190,.3) 0%,rgba(255,200,150,.1) 40%,transparent 72%)}
 .opdots{position:absolute;left:50%;bottom:clamp(24px,4vh,48px);transform:translateX(-50%);
   display:flex;gap:7px;z-index:7}
 .opdots i{display:block;width:20px;height:2px;border-radius:2px;background:#2b3138;
@@ -219,13 +216,13 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
 .bx:hover{transform:translateY(-4px);border-color:#333a43}
 /* obramowanie z poświatą, które budzi się pod kursorem */
 .bx::before{content:"";position:absolute;inset:-1px;border-radius:23px;padding:1px;opacity:0;
-  background:radial-gradient(340px 200px at var(--mx,50%) var(--my,50%),rgba(255,139,61,.55),transparent 65%);
+  background:radial-gradient(340px 200px at var(--mx,50%) var(--my,50%),rgba(236,231,222,0.303),transparent 65%);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
   -webkit-mask-composite:xor;mask-composite:exclude;
   transition:opacity .5s var(--ease);pointer-events:none}
 .bx:hover::before{opacity:1}
 .bx::after{content:"";position:absolute;inset:0;opacity:0;pointer-events:none;
-  background:radial-gradient(420px 240px at var(--mx,50%) var(--my,50%),rgba(255,139,61,.09),transparent 68%);
+  background:radial-gradient(420px 240px at var(--mx,50%) var(--my,50%),rgba(236,231,222,0.050),transparent 68%);
   transition:opacity .5s var(--ease)}
 .bx:hover::after{opacity:1}
 .bx .lab{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim2);font-weight:600}
@@ -242,7 +239,7 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
 .chips i{font-style:normal;font-size:13px;padding:7px 14px;border:1px solid var(--line2);
   border-radius:100px;color:var(--dim);transition:border-color .4s,color .4s,background .4s}
-.chips i:hover{border-color:rgba(255,139,61,.5);color:var(--flame2);background:rgba(255,139,61,.06)}
+.chips i:hover{border-color:rgba(236,231,222,0.275);color:var(--flame2);background:rgba(236,231,222,0.033)}
 
 /* ---------- suwak przed / po ---------- */
 .cmp{position:relative;margin-top:50px;border-radius:24px;overflow:hidden;border:1px solid var(--line);
@@ -250,7 +247,7 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
 .cmp img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;pointer-events:none}
 .cmp .after{clip-path:inset(0 0 0 var(--sp,50%))}
 .cmp .hnd{position:absolute;top:0;bottom:0;left:var(--sp,50%);width:2px;background:rgba(255,255,255,.9);
-  transform:translateX(-1px);pointer-events:none;box-shadow:0 0 22px rgba(255,139,61,.65)}
+  transform:translateX(-1px);pointer-events:none;box-shadow:0 0 22px rgba(236,231,222,0.358)}
 .cmp .hnd::after{content:"";position:absolute;left:50%;top:50%;width:54px;height:54px;
   transform:translate(-50%,-50%);border-radius:50%;border:1px solid rgba(255,255,255,.85);
   background:rgba(10,12,15,.5);backdrop-filter:blur(8px)}
@@ -333,7 +330,7 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
   border-radius:30px;overflow:hidden;padding:clamp(44px,7vw,84px);
   background:linear-gradient(150deg,#15100c,#0b0d10 55%);border:1px solid #2a2119}
 .cta::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(700px 340px at 12% 0%,rgba(255,139,61,.20),transparent 62%)}
+  background:radial-gradient(700px 340px at 12% 0%,rgba(236,231,222,0.110),transparent 62%)}
 .cta::after{content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
   background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);background-size:5px 5px;
   -webkit-mask-image:radial-gradient(70% 70% at 20% 10%,#000,transparent);
@@ -347,7 +344,7 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
   display:flex;align-items:center;justify-content:space-between;gap:32px;flex-wrap:wrap;
   background:linear-gradient(120deg,#16110c,#0b0d10 62%);border:1px solid #2a2119}
 .season::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:radial-gradient(520px 260px at 8% 10%,rgba(255,139,61,.16),transparent 62%)}
+  background:radial-gradient(520px 260px at 8% 10%,rgba(236,231,222,0.088),transparent 62%)}
 .season>*{position:relative}
 .season .lft b{display:block;font-family:Sora;font-weight:600;letter-spacing:-.025em;
   font-size:clamp(21px,2.6vw,32px);margin-bottom:8px}
@@ -430,14 +427,14 @@ section.block{padding:clamp(88px,13vh,150px) clamp(20px,6.5vw,104px);border-top:
   overflow:hidden;transition:border-color .5s var(--ease)}
 .hcard:hover{border-color:#343b44}
 .hcard::after{content:"";position:absolute;inset:0;opacity:0;pointer-events:none;
-  background:radial-gradient(500px 260px at var(--mx,50%) var(--my,0%),rgba(255,139,61,.13),transparent 70%);
+  background:radial-gradient(500px 260px at var(--mx,50%) var(--my,0%),rgba(236,231,222,0.072),transparent 70%);
   transition:opacity .5s}
 .hcard:hover::after{opacity:1}
 .hcard .n{font-family:Sora;font-size:12px;letter-spacing:.2em;color:var(--dim2)}
 .hcard h3{font-size:clamp(22px,2.4vw,30px);font-weight:600;margin:0 0 12px}
 .hcard p{font-size:15px;color:var(--dim);line-height:1.62;max-width:34ch}
 .hcard .ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;
-  background:rgba(255,139,61,.09);border:1px solid rgba(255,139,61,.2)}
+  background:rgba(236,231,222,0.050);border:1px solid rgba(236,231,222,0.110)}
 .hcard .ic svg{width:19px;height:19px;stroke:var(--flame);fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 
 .steps{display:grid;grid-template-columns:repeat(4,1fr);margin-top:56px;position:relative}
@@ -547,8 +544,8 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
     <div class="chapters" id="chapters">
       <div class="ch hero" data-i="0">
         <div class="eyebrow"><i>Gniezno i okolice · Kamil Szymański</i></div>
-        <h1 class="kin">Kocioł ma <em>działać</em>. Nie zastanawiać Cię.</h1>
-        <p class="lead">Przeglądy, naprawy i montaż kotłów gazowych. Ty mówisz, co się dzieje — ja mówię, ile i kiedy.</p>
+        <h1 class="kin">Przeglądy, naprawy i montaż kotłów gazowych</h1>
+        <p class="lead">Pracuję sam, na kotłach wszystkich popularnych marek. Zadzwoń i powiedz, co się dzieje — zwykle jestem u Ciebie następnego dnia.</p>
         <div class="row">
           <a class="mag" href="tel:+48782492609" data-mag data-cur="Zadzwoń">
             <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.4.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.4 21 3 13.6 3 4.5c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 1.7z"/></svg>
@@ -906,7 +903,7 @@ var FS=[
 '  col.r=texture2D(t,uv-dir*ab).r;',
 '  col.b=texture2D(t,uv+dir*ab).b;',
 // ciepły refleks od strony płomienia
-'  col+=vec3(1.0,0.55,0.22)*warm*0.10*(1.0-smoothstep(0.0,0.75,length(c-vec2(0.18,0.0))));',
+'  col+=vec3(1.0,0.72,0.46)*warm*0.055*(1.0-smoothstep(0.0,0.75,length(c-vec2(0.18,0.0))));',
 // ziarno
 '  col+=(h(uv*res+time)-0.5)*0.040;',
 // winieta
@@ -1066,19 +1063,19 @@ var railBtns=[].slice.call(rail.children);
    wskazany podzespół wypadł w kadrze. Punkty ux/uy to położenie danego elementu
    w obrazku wnętrza (0-1). */
 var OPP=[
-  {ux:0.556,uy:0.497,z:2.55,mz:2.10,fire:1, k:'Palnik',
-   h:'Tu powstaje ciepło', p:'Gaz miesza się z powietrzem i pali równym, niebieskim płomieniem. Żółty i kopcący znaczy, że mieszanka jest źle ustawiona — spalasz więcej, a grzeje słabiej.'},
-  {ux:0.556,uy:0.370,z:2.35,mz:1.95,fire:0.25, k:'Wymiennik ciepła',
-   h:'Miedź oddaje je wodzie', p:'Przez te żeberka ciepło ze spalin przechodzi do wody w grzejnikach. Osad i sadza na nich to ciepło, które ucieka kominem zamiast do domu.'},
-  {ux:0.430,uy:0.636,z:2.85,mz:2.30,fire:0.1, k:'Pompa obiegowa',
-   h:'Rozprowadza po całym domu', p:'Zapowietrzona albo zatarta zostawia zimne grzejniki na końcu obiegu, zwykle na piętrze. Słychać ją wtedy przez ścianę.'},
-  {ux:0.735,uy:0.405,z:2.75,mz:2.25,fire:0.08, k:'Naczynie przeponowe',
-   h:'Trzyma ciśnienie w ryzach', p:'Przejmuje wodę, która przy nagrzewaniu zwiększa objętość. Gdy straci powietrze, ciśnienie skacze i kocioł zrzuca wodę zaworem.'},
-  {ux:0.588,uy:0.723,z:2.75,mz:2.25,fire:0.05, k:'Sterownik',
-   h:'Pilnuje całej reszty', p:'Zapala palnik, steruje pompą i wyłącza kocioł przy usterce. Stąd biorą się kody błędów na wyświetlaczu.'}
+  {ux:0.556,uy:0.497,z:2.55,mz:2.10,fire:1, k:'Element 1 z 5',
+   h:'Palnik', p:'Gaz miesza się z powietrzem i pali równym, niebieskim płomieniem. Żółty i kopcący znaczy, że mieszanka jest źle ustawiona — spalasz więcej, a grzeje słabiej.'},
+  {ux:0.556,uy:0.370,z:2.35,mz:1.95,fire:0.25, k:'Element 2 z 5',
+   h:'Wymiennik ciepła', p:'Przez te żeberka ciepło ze spalin przechodzi do wody w grzejnikach. Osad i sadza na nich to ciepło, które ucieka kominem zamiast do domu.'},
+  {ux:0.430,uy:0.636,z:2.85,mz:2.30,fire:0.1, k:'Element 3 z 5',
+   h:'Pompa obiegowa', p:'Zapowietrzona albo zatarta zostawia zimne grzejniki na końcu obiegu, zwykle na piętrze. Słychać ją wtedy przez ścianę.'},
+  {ux:0.735,uy:0.405,z:2.75,mz:2.25,fire:0.08, k:'Element 4 z 5',
+   h:'Naczynie przeponowe', p:'Przejmuje wodę, która przy nagrzewaniu zwiększa objętość. Gdy straci powietrze, ciśnienie skacze i kocioł zrzuca wodę zaworem.'},
+  {ux:0.588,uy:0.723,z:2.75,mz:2.25,fire:0.05, k:'Element 5 z 5',
+   h:'Sterownik', p:'Zapala palnik, steruje pompą i wyłącza kocioł przy usterce. Stąd biorą się kody błędów na wyświetlaczu.'}
 ];
 var OPINTRO={k:'Otwieramy',h:'Zajrzyjmy do środka',p:'Przewiń — klapa się otwiera i wchodzimy do wnętrza kotła.'};
-var OPOUT={k:'Przegląd',h:'Przechodzę przez każdy z nich',p:'Przy przeglądzie sprawdzam je po kolei. Dlatego wiem, co się zepsuje, zanim się zepsuje.'};
+var OPOUT={k:'Przegląd',h:'Tyle sprawdzam przy przeglądzie',p:'Przy przeglądzie sprawdzam je po kolei. Dlatego wiem, co się zepsuje, zanim się zepsuje.'};
 
 var opBox=document.getElementById('open'),opCam=document.getElementById('opcam');
 var opIn=document.getElementById('opin'),opDoor=document.getElementById('opdoor');
@@ -1123,15 +1120,20 @@ function opFrame(t){
   opIn.style.left=Math.round(il)+'px';opIn.style.top=Math.round(it)+'px';
 
   /* klapa zakrywa otwór w obudowie; zawias na lewej krawędzi */
-  var dw=iw*0.735, dh=ih*0.963;
-  var dl=il+iw*0.264, dt=it+ih*0.017;
+  var dw=iw*0.700, dh=ih*0.938;
+  var dl=il+iw*0.283, dt=it+ih*0.030;
   opDoor.style.width=Math.round(dw)+'px';opDoor.style.height=Math.round(dh)+'px';
   opDoor.style.left=Math.round(dl)+'px';opDoor.style.top=Math.round(dt)+'px';
 
   /* KLAPA: 0 -> 118 stopni, potem znika za kadrem */
   var op=E(R((t-0.075)/0.190,0,1));
-  var gone=R((t-0.275)/0.075,0,1);
-  opDoor.style.transform='rotateY('+(-op*118).toFixed(1)+'deg) translateZ(0)';
+  var gone=R((t-0.285)/0.070,0,1);
+  var ang=op*96;
+  // im bardziej klapa odwraca się od światła, tym ciemniejsza — bez tego wygląda
+  // jak płaska naklejka przesuwana po ekranie, a nie jak otwierane drzwiczki
+  var lit=1-0.52*Math.sin(ang*Math.PI/180);
+  opDoor.style.transform='rotateY('+(-ang).toFixed(1)+'deg) translateZ(0)';
+  opDoor.style.filter='drop-shadow(0 30px 70px rgba(0,0,0,.8)) brightness('+lit.toFixed(3)+')';
   opDoor.style.opacity=(1-gone).toFixed(3);
   opDoor.style.visibility=gone>0.99?'hidden':'visible';
 
