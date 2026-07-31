@@ -1117,7 +1117,7 @@ function opFrame(t){
   var W=innerWidth,H=innerHeight,nar=W<=700;
   /* kocioł zajmuje niemal cały ekran — o to chodziło: ma być duży */
   var ih=H*(nar?0.62:0.88), iw=ih*OP_INR;
-  var cx=W*(nar?0.50:0.50), cy=H*(nar?0.35:0.47);
+  var cx=W*(nar?0.50:0.545), cy=H*(nar?0.35:0.47);
   var il=cx-iw/2, it=cy-ih/2;
   opIn.style.width=Math.round(iw)+'px';
   opIn.style.left=Math.round(il)+'px';opIn.style.top=Math.round(it)+'px';
@@ -1164,7 +1164,8 @@ function opFrame(t){
   /* wyjazd na koniec: wracamy na cały kocioł */
   var out=E(R((t-0.885)/0.070,0,1));
   if(out>0){var Zb=1,Xb=0,Yb=0;Z=Z+(Zb-Z)*out;X=X+(Xb-X)*out;Y=Y+(Yb-Y)*out}
-  opCam.style.transform='translate3d('+X.toFixed(1)+'px,'+Y.toFixed(1)+'px,0) scale('+Z.toFixed(4)+')';
+  // delikatna paralaksa od kursora — kadr „patrzy" za myszką, jak w pozostałych ujęciach
+  opCam.style.transform='translate3d('+(X-mx*18).toFixed(1)+'px,'+(Y-my*12).toFixed(1)+'px,0) scale('+Z.toFixed(4)+')';
 
   var fire=(A.fire+(B.fire-A.fire)*f)*R((t-0.105)/0.12,0,1);
   opGlow.style.opacity=(R(0.20+fire*0.80,0,1)*flick*(1-out*0.6)).toFixed(3);
