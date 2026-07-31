@@ -148,12 +148,35 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
   transition:border-color .35s,background .35s}
 .ghost:hover{border-color:#525a64;background:rgba(255,255,255,.08)}
 
-.parts{position:absolute;z-index:7;right:clamp(20px,6.5vw,104px);top:50%;transform:translateY(-50%);
-  width:min(320px,74vw);pointer-events:none}
-.part{padding:14px 0 14px 18px;border-left:1px solid #23272e;will-change:opacity}
-.part b{display:block;font-family:Sora;font-weight:600;font-size:16.5px;margin-bottom:2px;
-  text-shadow:0 2px 16px rgba(0,0,0,.9)}
-.part span{font-size:13.5px;color:var(--dim);text-shadow:0 2px 16px rgba(0,0,0,.9)}
+/* ---------- OTWIERANIE KOTŁA ---------- */
+/* Kocioł na cały ekran. Klapa to osobny obrazek obracany na zawiasie (rotateY),
+   pod nią leży render wnętrza — dlatego otwieranie jest prawdziwym ruchem, a nie
+   przenikaniem dwóch zdjęć. Kamera potem wjeżdża w kolejne podzespoły. */
+.open{position:absolute;inset:0;z-index:5;pointer-events:none;opacity:0;visibility:hidden;
+  perspective:1700px}
+.opcam{position:absolute;inset:0;transform-origin:0 0;will-change:transform;
+  transform-style:preserve-3d}
+.opin,.opdoor{position:absolute;display:block;will-change:transform,opacity}
+.opin{filter:drop-shadow(0 40px 90px rgba(0,0,0,.85))}
+.opdoor{transform-origin:0% 50%;backface-visibility:hidden;
+  filter:drop-shadow(0 30px 70px rgba(0,0,0,.8))}
+/* światło bijące z otwartego kotła */
+.opglow{position:absolute;border-radius:50%;pointer-events:none;mix-blend-mode:screen;
+  background:radial-gradient(circle,rgba(255,150,54,.85) 0%,rgba(255,110,30,.42) 26%,rgba(255,90,20,.12) 52%,transparent 74%)}
+/* w zbliżeniach kadr robi się jasny i tekst ginie — ten gradient wchodzi tylko
+   wtedy, gdy kamera jest w środku kotła */
+.opshade{position:absolute;inset:0;pointer-events:none;opacity:0;
+  background:linear-gradient(96deg,rgba(4,5,7,.95) 0%,rgba(4,5,7,.9) 22%,rgba(4,5,7,.6) 38%,rgba(4,5,7,.14) 54%,transparent 68%)}
+.opflash{position:absolute;inset:0;z-index:6;pointer-events:none;opacity:0;mix-blend-mode:screen;
+  background:radial-gradient(60% 50% at 58% 48%,rgba(255,146,58,.55) 0%,rgba(255,105,25,.22) 40%,transparent 72%)}
+.opdots{position:absolute;left:50%;bottom:clamp(24px,4vh,48px);transform:translateX(-50%);
+  display:flex;gap:7px;z-index:7}
+.opdots i{display:block;width:20px;height:2px;border-radius:2px;background:#2b3138;
+  transition:background .45s var(--ease)}
+.opdots i.on{background:var(--flame)}
+.ch.op{max-width:min(430px,34vw);opacity:0;visibility:hidden;will-change:opacity,transform}
+.ch.op p{max-width:34ch}
+.ch.op h2{font-size:clamp(28px,4.1vw,50px)}
 
 .rail{position:absolute;z-index:8;left:clamp(16px,3vw,34px);top:50%;transform:translateY(-50%);
   display:flex;flex-direction:column;gap:13px;pointer-events:auto}
@@ -457,6 +480,8 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
   display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--dim2);font-size:13px}
 
 @media(min-width:1001px){.ch{left:clamp(92px,9.5vw,158px)}}
+/* na małym laptopie aktywna kreska szyny rozdziałów sięgała pod tekst */
+@media(max-width:1000px) and (min-width:701px){.ch{left:78px}}
 @media(max-width:1000px){
   /* bez tego kafle zostają w 4 kolumnach i na telefonie tekst łamie się po słowie */
   .bento{grid-template-columns:repeat(2,1fr)}
@@ -480,12 +505,12 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
   .brand{font-size:13px}
   .mag{padding:9px 15px;font-size:13.5px;gap:7px}
   .rail,.hint{display:none}
-  .ch{bottom:clamp(46px,9vh,96px)}
+  /* dolny pasek z telefonem ma 88 px — podpis musi kończyć się nad nim */
+  .ch{bottom:clamp(104px,16vh,150px)}
   .ch.hero h1{max-width:none}
-  .parts{right:auto;left:clamp(20px,6.5vw,104px);top:auto;bottom:clamp(52px,10vh,110px);
-    transform:none;width:min(300px,82vw)}
-  .part{padding:10px 0 10px 14px}
-  .part b{font-size:15px}
+  .ch.op{max-width:none}
+  .opdots{bottom:auto;top:64vh}
+  .opshade{background:linear-gradient(180deg,transparent 0%,rgba(4,5,7,.25) 34%,rgba(4,5,7,.86) 58%,rgba(4,5,7,.97) 100%)}
   .hwrap{height:auto}
   .hsticky{position:static;height:auto;display:block;padding:0}
   .htrack{flex-direction:column;transform:none!important;padding:0 clamp(20px,6.5vw,104px)}
@@ -538,7 +563,12 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
         <p>Biała obudowa i cicha praca nie mówią nic o tym, w jakim stanie jest urządzenie w środku.</p></div>
 
       <div class="ch"><div class="kick"><i>Pod pokrywą</i></div>
-        <h2 class="kin">Pracują tu cztery rzeczy</h2></div>
+        <h2 class="kin">Za tą klapą pracuje kilkanaście elementów</h2>
+        <p>Każdy może się zużyć, zabrudzić albo rozregulować. Awaria to zwykle jeden z nich — nie „cały kocioł do wymiany".</p></div>
+
+      <div class="ch op" id="opdesc"><div class="kick"><i data-k>Otwieramy</i></div>
+        <h2 class="kin" data-h>Zajrzyjmy do środka</h2>
+        <p data-p>Przewiń — klapa się otwiera i wchodzimy do wnętrza kotła.</p></div>
 
       <div class="ch"><div class="kick"><i>Serce urządzenia</i></div>
         <h2 class="kin">Płomień musi być równy i niebieski</h2>
@@ -561,11 +591,15 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
         <p>Wyczyszczony wymiennik, ustawiony palnik, sprawdzona szczelność i ciśnienie. Kocioł pracuje tak, jak powinien.</p></div>
     </div>
 
-    <div class="parts" id="parts">
-      <div class="part"><b>Palnik</b><span>Tu powstaje ciepło</span></div>
-      <div class="part"><b>Wymiennik</b><span>Oddaje je wodzie</span></div>
-      <div class="part"><b>Pompa</b><span>Rozprowadza po grzejnikach</span></div>
-      <div class="part"><b>Sterownik</b><span>Pilnuje parametrów</span></div>
+    <div class="open" id="open" aria-hidden="true">
+      <div class="opcam" id="opcam">
+        <img class="opin" id="opin" alt="">
+        <div class="opglow" id="opglow"></div>
+        <img class="opdoor" id="opdoor" alt="">
+      </div>
+      <div class="opshade" id="opshade"></div>
+      <div class="opflash" id="opflash"></div>
+      <div class="opdots" id="opdots"></div>
     </div>
 
     <nav class="rail" id="rail"></nav>
@@ -796,15 +830,18 @@ var E=function(x){return x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2};
 /* tr = sposób, w jaki NASTĘPNE ujęcie wchodzi w kadr. Każde przejście inne — jedno
    powtarzane przez całą stronę robi się przewidywalne po drugim razie. */
 var SEG=[
-  {t:'seq',key:'h',n:50,w:2.60,rail:'Start',      tr:'wipe'},
-  {t:'img',src:'img/2-obudowa.jpg',  w:1.60,z:[1.04,1.15],rail:'W środku',   tr:'mosaic'},
+  {t:'seq',key:'h',n:50,w:2.60,rail:'Start',      tr:'mosaic'},
+  /* w ciemną scenę wchodzimy miękkim odsłonięciem — kafelki na czerni czytają się jak usterka */
+  {t:'img',src:'img/2-obudowa.jpg',  w:1.20,z:[1.04,1.15],rail:'W środku',   tr:'wipe'},
+  {t:'open',                         w:4.60,rail:'Otwieramy',   tr:'zoom'},
   {t:'seq',key:'p',n:50,w:1.55,rail:'Palnik',     tr:'slide'},
-  {t:'img',src:'img/4-wymiennik.jpg',w:1.10,z:[1.15,1.04],rail:'Wymiennik',  tr:'zoom'},
-  {t:'img',src:'img/5-pompa.jpg',    w:1.10,z:[1.04,1.14],rail:'Instalacja', tr:'mosaic'},
+  {t:'img',src:'img/4-wymiennik.jpg',w:1.00,z:[1.15,1.04],rail:'Wymiennik',  tr:'zoom'},
+  {t:'img',src:'img/5-pompa.jpg',    w:1.00,z:[1.04,1.14],rail:'Instalacja', tr:'mosaic'},
   {t:'seq',key:'b',n:34,w:1.50,rail:'Zaniedbanie',tr:'wipe'},
   {t:'seq',key:'f',n:50,w:1.55,rail:'Po serwisie'}
 ];
-var CAPS=[[0,1.05],[1.32,2.30],[2.78,3.90],[4.38,5.45],[5.92,6.60],[7.02,7.70],[8.15,9.20],[9.65,10.92]];
+var SEG_FLAME=3, SEG_FINAL=7; // ujęcia, przy których shader dokłada ciepły refleks
+var CAPS=[[0,1.05],[1.30,2.45],[2.72,3.56],[8.58,9.68],[10.12,10.72],[11.12,11.72],[12.15,13.22],[13.65,14.90]];
 var CFADE=0.24, FADE=0.30;
 var TOTAL=SEG.reduce(function(a,s){return a+s.w},0);
 var starts=[],acc=0; SEG.forEach(function(s){starts.push(acc);acc+=s.w});
@@ -937,6 +974,13 @@ function drawSeg(c,i,t,alpha,extra){
     }
     return cover(c,im,1.02+0.03*E(t)+extra,0,alpha);
   }
+  if(s.t==='open'){
+    // tło: to samo wnętrze kotłowni, ale prawie wygaszone — bohaterem kadru jest render
+    var ok=cover(c,stills['img/2-obudowa.jpg'],1.34+0.16*E(t)+extra,0,alpha);
+    c.globalAlpha=(alpha===undefined?1:alpha)*0.94;
+    c.fillStyle='#05070a';c.fillRect(0,0,CW,CH);c.globalAlpha=1;
+    return ok;
+  }
   var z=s.z||[1.1,1.02];
   return cover(c,stills[s.src],z[0]+(z[1]-z[0])*E(t)+extra,(t-0.5)*22,alpha);
 }
@@ -957,6 +1001,7 @@ function start(){
   if(started)return;started=true;
   boot.classList.add('done');setTimeout(function(){boot.remove()},1000);
   ['img/4-wymiennik.jpg','img/5-pompa.jpg'].forEach(function(s){stills[s]=loadList([s])[0]});
+  opLoad();
   store.p=loadList(seqList('p',50));store.b=loadList(seqList('b',34));store.f=loadList(seqList('f',50));
   intro();
 }
@@ -999,9 +1044,8 @@ function intro(){
 }
 
 /* ================= PĘTLA ================= */
-var chs=[].slice.call(document.querySelectorAll('.ch'));
-var parts=[].slice.call(document.querySelectorAll('.part'));
-var partsBox=document.getElementById('parts'),rail=document.getElementById('rail');
+var chs=[].slice.call(document.querySelectorAll('.ch:not(.op)'));
+var rail=document.getElementById('rail');
 var pfill=document.getElementById('pfill'),hint=document.getElementById('hint');
 var hdr=document.getElementById('hdr'),film=document.getElementById('film');
 
@@ -1014,6 +1058,136 @@ SEG.forEach(function(s,i){
   rail.appendChild(b);
 });
 var railBtns=[].slice.call(rail.children);
+
+/* ================= OTWIERANIE KOTŁA ================= */
+/* Dwie warstwy: render wnętrza i osobna klapa obracana na zawiasie przy lewej
+   krawędzi. Nad nimi jedna „kamera" (opcam) — przesuwana i przybliżana tak, żeby
+   wskazany podzespół wypadł w kadrze. Punkty ux/uy to położenie danego elementu
+   w obrazku wnętrza (0-1). */
+var OPP=[
+  {ux:0.556,uy:0.497,z:2.55,mz:2.10,fire:1, k:'Palnik',
+   h:'Tu powstaje ciepło', p:'Gaz miesza się z powietrzem i pali równym, niebieskim płomieniem. Żółty i kopcący znaczy, że mieszanka jest źle ustawiona — spalasz więcej, a grzeje słabiej.'},
+  {ux:0.556,uy:0.370,z:2.35,mz:1.95,fire:0.25, k:'Wymiennik ciepła',
+   h:'Miedź oddaje je wodzie', p:'Przez te żeberka ciepło ze spalin przechodzi do wody w grzejnikach. Osad i sadza na nich to ciepło, które ucieka kominem zamiast do domu.'},
+  {ux:0.430,uy:0.636,z:2.85,mz:2.30,fire:0.1, k:'Pompa obiegowa',
+   h:'Rozprowadza po całym domu', p:'Zapowietrzona albo zatarta zostawia zimne grzejniki na końcu obiegu, zwykle na piętrze. Słychać ją wtedy przez ścianę.'},
+  {ux:0.735,uy:0.405,z:2.75,mz:2.25,fire:0.08, k:'Naczynie przeponowe',
+   h:'Trzyma ciśnienie w ryzach', p:'Przejmuje wodę, która przy nagrzewaniu zwiększa objętość. Gdy straci powietrze, ciśnienie skacze i kocioł zrzuca wodę zaworem.'},
+  {ux:0.588,uy:0.723,z:2.75,mz:2.25,fire:0.05, k:'Sterownik',
+   h:'Pilnuje całej reszty', p:'Zapala palnik, steruje pompą i wyłącza kocioł przy usterce. Stąd biorą się kody błędów na wyświetlaczu.'}
+];
+var OPINTRO={k:'Otwieramy',h:'Zajrzyjmy do środka',p:'Przewiń — klapa się otwiera i wchodzimy do wnętrza kotła.'};
+var OPOUT={k:'Przegląd',h:'Przechodzę przez każdy z nich',p:'Przy przeglądzie sprawdzam je po kolei. Dlatego wiem, co się zepsuje, zanim się zepsuje.'};
+
+var opBox=document.getElementById('open'),opCam=document.getElementById('opcam');
+var opIn=document.getElementById('opin'),opDoor=document.getElementById('opdoor');
+var opGlow=document.getElementById('opglow'),opFlash=document.getElementById('opflash');
+var opShade=document.getElementById('opshade');
+var opDesc=document.getElementById('opdesc'),opDots=document.getElementById('opdots');
+OPP.forEach(function(){opDots.appendChild(document.createElement('i'))});
+var opDotEls=[].slice.call(opDots.children);
+var opKick=opDesc.querySelector('[data-k]'),opH=opDesc.querySelector('[data-h]'),opP=opDesc.querySelector('[data-p]');
+var opLoaded=false,opShown=false,opCap=-9;
+var OP_A=0.355,OP_B=0.870,OP_SEG=(OP_B-OP_A)/OPP.length,OP_FADE=0.018;
+/* proporcje renderów (szerokość/wysokość) — z plików, żeby nie czytać layoutu w pętli */
+var OP_INR=1400/2211, OP_DOR=900/1550;
+
+function opLoad(){
+  if(opLoaded)return;opLoaded=true;
+  opIn.src='img/exp/wnetrze.webp';
+  opDoor.src='img/exp/klapa.webp';
+  opIn.onload=opDoor.onload=req;
+}
+function opHide(){
+  if(!opShown)return;opShown=false;
+  opBox.style.opacity='0';opBox.style.visibility='hidden';opCap=-9;
+  opDesc.style.opacity='0';opDesc.style.visibility='hidden';
+}
+function opText(c){
+  var d=c>=0?OPP[c]:(c===-1?OPINTRO:OPOUT);
+  opKick.textContent=d.k;opH.textContent=d.h;opP.textContent=d.p;
+}
+function opFrame(t){
+  opLoad();
+  var vis=R(t/0.026,0,1)*(1-R((t-0.930)/0.045,0,1));
+  if(vis<=0.004){opHide();return}
+  opShown=true;opBox.style.visibility='visible';opBox.style.opacity=vis.toFixed(3);
+
+  var W=innerWidth,H=innerHeight,nar=W<=700;
+  /* kocioł zajmuje niemal cały ekran — o to chodziło: ma być duży */
+  var ih=H*(nar?0.62:0.88), iw=ih*OP_INR;
+  var cx=W*(nar?0.50:0.50), cy=H*(nar?0.35:0.47);
+  var il=cx-iw/2, it=cy-ih/2;
+  opIn.style.width=Math.round(iw)+'px';
+  opIn.style.left=Math.round(il)+'px';opIn.style.top=Math.round(it)+'px';
+
+  /* klapa zakrywa otwór w obudowie; zawias na lewej krawędzi */
+  var dw=iw*0.735, dh=ih*0.963;
+  var dl=il+iw*0.264, dt=it+ih*0.017;
+  opDoor.style.width=Math.round(dw)+'px';opDoor.style.height=Math.round(dh)+'px';
+  opDoor.style.left=Math.round(dl)+'px';opDoor.style.top=Math.round(dt)+'px';
+
+  /* KLAPA: 0 -> 118 stopni, potem znika za kadrem */
+  var op=E(R((t-0.075)/0.190,0,1));
+  var gone=R((t-0.275)/0.075,0,1);
+  opDoor.style.transform='rotateY('+(-op*118).toFixed(1)+'deg) translateZ(0)';
+  opDoor.style.opacity=(1-gone).toFixed(3);
+  opDoor.style.visibility=gone>0.99?'hidden':'visible';
+
+  /* światło buchające z otwartego kotła + drganie płomienia */
+  var flick=0.86+0.14*Math.sin((performance.now()-t0)/95)*Math.sin((performance.now()-t0)/37);
+  var gw=iw*1.05;
+  opGlow.style.width=Math.round(gw)+'px';opGlow.style.height=Math.round(gw)+'px';
+  opGlow.style.left=Math.round(il+iw*0.556-gw/2)+'px';
+  opGlow.style.top=Math.round(it+ih*0.497-gw/2)+'px';
+
+  /* KAMERA: stan bazowy (cały kocioł) -> kolejne podzespoły */
+  var pp=(t-OP_A)/OP_SEG, kk=Math.floor(pp);
+  var cur=R(kk,-1,OPP.length-1), nxt=R(kk,0,OPP.length-1);
+  var f=E(R((pp-kk)/0.44,0,1));
+  if(t<OP_A){cur=-1;nxt=-1;f=0}
+  if(t>OP_B){cur=OPP.length-1;nxt=OPP.length-1;f=1}
+  function camOf(k){
+    if(k<0)return {z:1,x:0,y:0,fire:0};
+    var d=OPP[k], z=nar?d.mz:d.z;
+    var px=il+d.ux*iw, py=it+d.uy*ih;
+    var tx=W*(nar?0.50:0.585), ty=H*(nar?0.33:0.45);
+    return {z:z,x:tx-px*z,y:ty-py*z,fire:d.fire};
+  }
+  var A=camOf(cur<0?-1:cur), B=camOf(nxt);
+  /* przed pierwszym podzespołem kamera lekko dojeżdża — jak u Apple: dojazd, przystanek */
+  var pre=E(R((t-0.285)/0.070,0,1))*(t<OP_A?1:0);
+  var Z=A.z+(B.z-A.z)*f + (t<OP_A?pre*0.10:0);
+  var X=A.x+(B.x-A.x)*f, Y=A.y+(B.y-A.y)*f;
+  if(t<OP_A){X=0;Y=0;Z=1+pre*0.10}
+  /* wyjazd na koniec: wracamy na cały kocioł */
+  var out=E(R((t-0.885)/0.070,0,1));
+  if(out>0){var Zb=1,Xb=0,Yb=0;Z=Z+(Zb-Z)*out;X=X+(Xb-X)*out;Y=Y+(Yb-Y)*out}
+  opCam.style.transform='translate3d('+X.toFixed(1)+'px,'+Y.toFixed(1)+'px,0) scale('+Z.toFixed(4)+')';
+
+  var fire=(A.fire+(B.fire-A.fire)*f)*R((t-0.105)/0.12,0,1);
+  opGlow.style.opacity=(R(0.20+fire*0.80,0,1)*flick*(1-out*0.6)).toFixed(3);
+
+  /* przeskok między podzespołami podbity błyskiem ognia */
+  var fl=(t>OP_A&&t<OP_B)?Math.pow(1-Math.abs(((pp-Math.floor(pp))-0.16)/0.16),3):0;
+  opFlash.style.opacity=R(fl,0,1).toFixed(3)*1;
+
+  /* podpisy */
+  var cap;
+  if(t<0.345)cap=-1;else if(t<0.876)cap=R(Math.floor((t-OP_A)/OP_SEG),0,OPP.length-1);else cap=-2;
+  if(cap!==opCap){opCap=cap;opText(cap)}
+  var w0,w1;
+  if(cap===-1){w0=0;w1=0.335}else if(cap===-2){w0=0.884;w1=0.995}
+  else{w0=OP_A+cap*OP_SEG;w1=w0+OP_SEG}
+  var ca=R((t-w0)/OP_FADE,0,1)*(1-R((t-(w1-OP_FADE))/OP_FADE,0,1));
+  opDesc.style.visibility=ca>0.004?'visible':'hidden';
+  opDesc.style.opacity=(ca*vis).toFixed(3);
+  opDesc.style.transform='translateY('+((1-ca)*12).toFixed(1)+'px)';
+
+  opShade.style.opacity=(R((t-0.285)/0.075,0,1)*(1-out*0.85)).toFixed(3);
+  opDotEls.forEach(function(el,k){el.classList.toggle('on',cap===k)});
+  opDots.style.opacity=(R((t-0.30)/0.06,0,1)*(1-R((t-0.885)/0.05,0,1))*vis).toFixed(3);
+}
 
 var smooth=null,lastRaw=0,vel=0,mx=0,my=0,tmx=0,tmy=0,t0=performance.now(),lastSeg=-1,running=false;
 
@@ -1090,7 +1264,7 @@ function frame(){
     gl.uniform1f(uTr,ov);
     gl.uniform2f(uMo,mx,my);
     // ciepły refleks tam, gdzie w kadrze jest ogień
-    gl.uniform1f(uWarm,(i===2?1:0)*R(1-Math.abs(t-0.5)*1.4,0,1)+(i===6?0.35:0));
+    gl.uniform1f(uWarm,(i===SEG_FLAME?1:0)*R(1-Math.abs(t-0.5)*1.4,0,1)+(i===SEG_FINAL?0.35:0)+(i===2?0.5*R((t-0.09)/0.2,0,1):0));
     gl.drawArrays(gl.TRIANGLES,0,3);
   }
 
@@ -1121,16 +1295,7 @@ function frame(){
     el.style.transform=(el.classList.contains('hero')?'translateY(-50%)':'');
   });
 
-  var PR=[2.86,3.92];
-  var pa=(T>PR[0]&&T<PR[1])?Math.min(1,(T-PR[0])/0.2)*(1-R((T-(PR[1]-0.22))/0.22,0,1)):0;
-  partsBox.style.opacity=pa.toFixed(3);
-  partsBox.style.visibility=pa>0.002?'visible':'hidden';
-  if(pa>0.002)parts.forEach(function(el,k){
-    var v=R((T-(PR[0]+0.16+k*0.2))/0.14,0,1);
-    el.style.opacity=(0.24+0.76*v).toFixed(3);
-    el.style.borderLeftColor=v>0.5?'#ff8b3d':'#23272e';
-    el.style.transform='translateX('+(v*5).toFixed(1)+'px)';
-  });
+  if(s.t==='open')opFrame(t);else opHide();
 
   pfill.style.width=(smooth*100).toFixed(2)+'%';
   if(lastSeg!==i){lastSeg=i;railBtns.forEach(function(b,k){b.classList.toggle('on',k===i)})}
@@ -1363,7 +1528,10 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
 });
 
 /* ile ekranu scrolla przypada na jednostkę osi — im więcej, tym spokojniej płynie film */
-function sizeFilm(){film.style.height=(TOTAL*178+100)+'vh'}
+function sizeFilm(){
+  var per=matchMedia('(max-width:700px)').matches?136:178;
+  film.style.height=(TOTAL*per+100)+'vh';
+}
 sizeFilm();addEventListener('resize',sizeFilm);
 })();
 </script>
