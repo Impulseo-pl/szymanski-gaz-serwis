@@ -119,7 +119,9 @@ header.stuck{background:rgba(8,9,11,.7);backdrop-filter:blur(18px) saturate(1.3)
 .ch .kick{display:block;font-size:11px;letter-spacing:.34em;text-transform:uppercase;
   color:var(--flame);font-weight:600;margin-bottom:16px;overflow:hidden}
 .ch .kick i{display:inline-block;font-style:normal;will-change:transform}
-.ch h2{font-size:clamp(29px,5.1vw,60px);font-weight:600;margin-bottom:16px}
+/* odstęp liczony od wielkości nagłówka: przy 60px stałe 16px dawało 8px prześwitu nad
+   akapitem i przy wjeżdżających słowach nagłówek wyglądał, jakby wchodził na tekst */
+.ch h2{font-size:clamp(29px,5.1vw,60px);font-weight:600;margin-bottom:max(18px,.5em)}
 .ch p{font-size:clamp(15px,1.6vw,19px);color:#c9ced5;max-width:50ch;
   text-shadow:0 2px 22px rgba(0,0,0,.9)}
 
@@ -460,6 +462,28 @@ section.block{padding:clamp(88px,13vh,150px) clamp(20px,6.5vw,104px);border-top:
 
 #kontakt{background:linear-gradient(180deg,#0a0c0f,#070809)}
 .ctagrid{display:grid;grid-template-columns:1.1fr .9fr;gap:58px;align-items:start;margin-top:46px}
+
+/* formularz — dla tych, którzy nie chcą dzwonić; telefon zostaje pierwszym wyborem */
+.cform{margin-top:52px;padding-top:38px;border-top:1px solid var(--line)}
+.cf-title{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--dim2);
+  font-weight:600;margin-bottom:22px}
+.cf-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.cform label{display:block;font-size:12px;letter-spacing:.06em;color:var(--dim2)}
+.cf-msg{margin-top:18px}
+.cform input,.cform textarea{display:block;width:100%;margin-top:8px;padding:13px 15px;
+  background:rgba(255,255,255,.03);border:1px solid var(--line2);border-radius:12px;
+  color:var(--ink);font:inherit;font-size:15px;transition:border-color .25s,background .25s}
+.cform textarea{resize:vertical;min-height:88px}
+.cform input:focus,.cform textarea:focus{outline:none;border-color:var(--dim2);background:rgba(255,255,255,.05)}
+.cf-send{margin-top:22px;padding:14px 30px;border:0;border-radius:999px;cursor:pointer;
+  background:var(--flame);color:#0b0d10;font:inherit;font-weight:600;font-size:15px;
+  transition:transform .25s var(--eout),background .25s}
+.cf-send:hover{background:var(--flame2);transform:translateY(-1px)}
+.cf-note{display:inline-block;margin-left:16px;font-size:13px;color:var(--dim2)}
+@media(max-width:700px){
+  .cf-grid{grid-template-columns:1fr}
+  .cf-note{display:block;margin:14px 0 0}
+}
 .bigphone{font-family:Sora;font-weight:700;font-size:clamp(30px,6.2vw,70px);letter-spacing:-.04em;
   text-decoration:none;display:inline-block;transition:color .4s}
 .bigphone:hover{color:var(--flame)}
@@ -475,6 +499,8 @@ section.block{padding:clamp(88px,13vh,150px) clamp(20px,6.5vw,104px);border-top:
 
 footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
   display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;color:var(--dim2);font-size:13px}
+.foot-credit{color:var(--dim);text-decoration:none;border-bottom:1px solid var(--line2)}
+.foot-credit:hover{color:var(--flame);border-color:currentColor}
 
 @media(min-width:1001px){.ch{left:clamp(92px,9.5vw,158px)}}
 /* na małym laptopie aktywna kreska szyny rozdziałów sięgała pod tekst */
@@ -792,11 +818,27 @@ footer{padding:32px clamp(20px,6.5vw,104px);border-top:1px solid var(--line);
       <div><b>Serwisant</b><span>Kamil Szymański</span></div>
     </div>
   </div>
+
+  <form class="cform" action="https://formsubmit.co/kamilszymanski123@vp.pl" method="POST">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_subject" value="Zapytanie ze strony — Szymański Gaz Serwis">
+    <input type="text" name="_honey" style="display:none">
+    <div class="cf-title">Wolisz napisać? Opisz sprawę tutaj</div>
+    <div class="cf-grid">
+      <label>Imię<input type="text" name="Imie" required autocomplete="name"></label>
+      <label>Telefon<input type="tel" name="Telefon" required autocomplete="tel"></label>
+      <label>Model kotła<input type="text" name="Kociol" autocomplete="off"></label>
+    </div>
+    <label class="cf-msg">Co się dzieje z kotłem?<textarea name="Wiadomosc" rows="3" required></textarea></label>
+    <button type="submit" class="cf-send">Wyślij zapytanie</button>
+    <span class="cf-note">Odpowiadam tego samego dnia. Pilne sprawy — dzwoń.</span>
+  </form>
 </div>
 
 <footer>
   <div>Szymański Gaz Serwis · Kamil Szymański · Gniezno</div>
   <div>Serwis kotłów gazowych</div>
+  <div>Projekt strony: <a class="foot-credit" href="https://impulseo.pl" target="_blank" rel="noopener">Impulseo</a></div>
 </footer>
 
 <div class="dock" id="dock">
